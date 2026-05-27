@@ -5,39 +5,94 @@ import { getSfx } from "@/lib/sound";
 import { useRoom } from "@/components/providers/room-provider";
 import { generateRoomCode, type RoomConfig } from "@/lib/multiplayer/protocol";
 import { Screen } from "@/components/ui/screen";
+import { Backdrop } from "@/components/ui/backdrop";
 import { BottomInfo } from "@/components/ui/bottom-info";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { ChoiceScreen } from "./choice-screen";
 import { CreateConfigScreen } from "./create-config-screen";
+import { JoinCodeScreen } from "./join-code-screen";
 import { NameModal } from "./name-modal";
+import { WaitingRoom } from "./waiting-room";
 
 type Phase = "choice" | "create" | "join";
 
 interface ChallengeFlowProps {
   onExit: () => void;
+  initialJoinCode?: string;
 }
 
-export function ChallengeFlow({ onExit }: ChallengeFlowProps) {
+export function ChallengeFlow({ onExit, initialJoinCode }: ChallengeFlowProps) {
   const room = useRoom();
-  const [phase, setPhase] = useState<Phase>("choice");
+  const [phase, setPhase] = useState<Phase>(
+    initialJoinCode ? "join" : "choice",
+  );
   const [pendingConfig, setPendingConfig] = useState<RoomConfig | null>(null);
+  const [joinCode, setJoinCode] = useState<string | null>(null);
+  const [closing, setClosing] = useState(false);
 
   const go = (next: Phase) => {
     getSfx().click();
     setPhase(next);
   };
 
-  // Ya dentro de una sala (creada o unida).
+  const leaveToChoice = () => {
+    room.disconnect();
+    setPhase("choice");
+    setPendingConfig(null);
+    setJoinCode(null);
+    setClosing(false);
+  };
+
+  // ===== Ya dentro de una sala =====
   if (room.you && room.snapshot) {
+    const status = room.snapshot.status;
+
+    if (status === "lobby") {
+      return (
+        <>
+          <Screen label="09 Room">
+            <Backdrop />
+            <BottomInfo>BuscaNúmeros · multijugador</BottomInfo>
+          </Screen>
+          {closing ? (
+            <ConfirmModal
+              title="¿Cerrar la partida?"
+              subtitle="Se expulsará a todos los jugadores de la sala."
+              confirmLabel="Cerrar partida"
+              cancelLabel="Seguir esperando"
+              onConfirm={() => {
+                getSfx().click();
+                room.close();
+                leaveToChoice();
+              }}
+              onCancel={() => setClosing(false)}
+            />
+          ) : (
+            <WaitingRoom
+              onRequestClose={() => {
+                getSfx().click();
+                if (room.isHost) setClosing(true);
+                else {
+                  room.leave();
+                  leaveToChoice();
+                }
+              }}
+            />
+          )}
+        </>
+      );
+    }
+
+    // status "playing" / "finished": implementado en MP6 / MP7.
     return (
       <Screen label="09 Room">
-        <BottomInfo>
-          Sala {room.snapshot.code} · {room.snapshot.players.length}/
-          {room.snapshot.config.capacity} jugadores
-        </BottomInfo>
+        <Backdrop />
+        <BottomInfo>Partida en curso…</BottomInfo>
       </Screen>
     );
   }
 
+  // ===== Crear =====
   if (phase === "create") {
     return (
       <>
@@ -56,6 +111,36 @@ export function ChallengeFlow({ onExit }: ChallengeFlowProps) {
               room.connect(generateRoomCode());
               room.create(name, pendingConfig);
               setPendingConfig(null);
+            }}
+          />
+        )}
+      </>
+    );
+  }
+
+  // ===== Unirse =====
+  if (phase === "join") {
+    return (
+      <>
+        <JoinCodeScreen
+          initialCode={initialJoinCode}
+          onBack={() => {
+            room.disconnect();
+            go("choice");
+          }}
+          checkCode={(code) => room.peekRoom(code)}
+          onValidated={(code) => setJoinCode(code)}
+        />
+        {joinCode && (
+          <NameModal
+            confirmLabel="Entrar"
+            onCancel={() => {
+              setJoinCode(null);
+              room.disconnect();
+            }}
+            onConfirm={(name) => {
+              room.join(name);
+              setJoinCode(null);
             }}
           />
         )}

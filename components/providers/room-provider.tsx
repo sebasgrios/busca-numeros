@@ -41,6 +41,7 @@ interface RoomContextValue {
   error: RoomError | null;
   peekResult: JoinAvailability | null;
   connect: (code: string) => void;
+  peekRoom: (code: string) => Promise<JoinAvailability>;
   disconnect: () => void;
   clearError: () => void;
   create: (name: string, config: RoomConfig) => void;
@@ -60,6 +61,7 @@ const RoomContext = createContext<RoomContextValue | null>(null);
 
 export function RoomProvider({ children }: { children: React.ReactNode }) {
   const socketRef = useRef<PartySocket | null>(null);
+  const peekResolverRef = useRef<((a: JoinAvailability) => void) | null>(null);
   const [code, setCode] = useState<string | null>(null);
   const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(null);
   const [youId, setYouId] = useState<string | null>(null);
@@ -106,6 +108,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
             break;
           case "peek":
             setPeekResult(msg.availability);
+            peekResolverRef.current?.(msg.availability);
+            peekResolverRef.current = null;
             break;
           case "error":
             setError({ code: msg.code, message: msg.message });
@@ -127,6 +131,26 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     socketRef.current?.send(encode(msg));
   }, []);
 
+  const peekRoom = useCallback(
+    (roomCode: string) =>
+      new Promise<JoinAvailability>((resolve) => {
+        connect(roomCode);
+        peekResolverRef.current = resolve;
+        const socket = socketRef.current;
+        socket?.addEventListener("open", () => send({ type: "peek" }), {
+          once: true,
+        });
+        // Salvaguarda: si no hay respuesta, asumimos que no existe.
+        setTimeout(() => {
+          if (peekResolverRef.current === resolve) {
+            peekResolverRef.current = null;
+            resolve("not_found");
+          }
+        }, 5000);
+      }),
+    [connect, send],
+  );
+
   const value = useMemo<RoomContextValue>(() => {
     const you = snapshot?.players.find((p) => p.id === youId) ?? null;
     return {
@@ -139,6 +163,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       error,
       peekResult,
       connect,
+      peekRoom,
       disconnect,
       clearError: () => setError(null),
       create: (name, config) => send({ type: "create", name, config }),
@@ -162,6 +187,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     error,
     peekResult,
     connect,
+    peekRoom,
     disconnect,
     send,
   ]);
