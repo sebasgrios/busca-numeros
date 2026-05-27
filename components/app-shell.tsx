@@ -11,6 +11,8 @@ import { VictoryScreen } from "@/components/screens/result/victory-screen";
 import { LoseScreen } from "@/components/screens/result/lose-screen";
 import { RecordsScreen } from "@/components/screens/records/records-screen";
 import { SettingsScreen } from "@/components/screens/settings/settings-screen";
+import { RoomProvider } from "@/components/providers/room-provider";
+import { ChallengeFlow } from "@/components/screens/challenge/challenge-flow";
 
 export function AppShell() {
   const { state, registerWin, registerLoss, clearRecords } = useGameState();
@@ -94,11 +96,20 @@ export function AppShell() {
     return withToast(<SettingsScreen onHome={() => go("home")} />);
   }
 
+  if (screen === "challenge") {
+    return (
+      <RoomProvider>
+        <ChallengeFlow onExit={() => go("home")} />
+      </RoomProvider>
+    );
+  }
+
   return withToast(
     <HomeScreen
       onPlay={startGame}
       onRecords={() => go("records")}
       onSettings={() => go("settings")}
+      onChallenge={() => go("challenge")}
     />,
   );
 }

@@ -17,11 +17,17 @@ interface HomeScreenProps {
   onPlay: () => void;
   onRecords: () => void;
   onSettings: () => void;
+  onChallenge: () => void;
 }
 
 const LOGO_SEED = [7, 3, 12, 9, 1, 4, 11, 2, 8];
 
-export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
+export function HomeScreen({
+  onPlay,
+  onRecords,
+  onSettings,
+  onChallenge,
+}: HomeScreenProps) {
   const { state, toggleDark } = useGameState();
   const cfg = state.settings.game;
   const key = configKey(cfg);
@@ -90,7 +96,7 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
         <Button variant="ghost" block onClick={onRecords}>
           🏆&nbsp;&nbsp;Récords
         </Button>
-        <Button block comingSoon>
+        <Button variant="secondary" block onClick={onChallenge}>
           ⚔&nbsp;&nbsp;Retar
         </Button>
       </div>
