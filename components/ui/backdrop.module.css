@@ -1,0 +1,44 @@
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(34px);
+  opacity: 0.55;
+}
+
+.b1 {
+  width: 260px;
+  height: 260px;
+  background: var(--sun);
+  top: -90px;
+  right: -80px;
+}
+
+.b2 {
+  width: 220px;
+  height: 220px;
+  background: var(--coral);
+  bottom: -60px;
+  left: -70px;
+  opacity: 0.35;
+}
+
+.b3 {
+  width: 180px;
+  height: 180px;
+  background: var(--mint);
+  top: 40%;
+  left: -90px;
+  opacity: 0.25;
+}
+
+:global([data-theme="dark"]) .blob {
+  opacity: 0.25;
+}

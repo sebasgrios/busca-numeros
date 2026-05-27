@@ -1,0 +1,78 @@
+.home {
+  justify-content: space-between;
+}
+
+.hero {
+  margin-top: 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.logoArt {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 8px;
+  transform: rotate(-4deg);
+}
+
+.tile {
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 700;
+  color: #fff;
+  font-size: 26px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.12);
+  animation: bob 3.6s ease-in-out infinite;
+}
+.tile:nth-child(odd) {
+  animation-delay: -0.6s;
+}
+.tile:nth-child(3n) {
+  animation-delay: -1.2s;
+}
+
+.brand {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 44px;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin: 6px 0 0;
+  color: var(--ink);
+}
+.accent {
+  color: var(--coral);
+}
+
+.tagline {
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin: 4px 0 0;
+  font-weight: 600;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

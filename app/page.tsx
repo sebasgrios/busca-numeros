@@ -1,3 +1,10 @@
+import { GameStateProvider } from "@/components/providers/game-state-provider";
+import { AppShell } from "@/components/app-shell";
+
 export default function Page() {
-  return null;
+  return (
+    <GameStateProvider>
+      <AppShell />
+    </GameStateProvider>
+  );
 }

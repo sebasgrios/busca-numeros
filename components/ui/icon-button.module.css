@@ -1,0 +1,26 @@
+.iconbtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 0;
+  box-shadow: var(--shadow-soft);
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.iconbtn:active {
+  transform: translateY(3px);
+  box-shadow: var(--shadow-press);
+}
+
+.iconbtn[aria-pressed="true"] {
+  background: var(--sun);
+  color: #4b2e0c;
+}

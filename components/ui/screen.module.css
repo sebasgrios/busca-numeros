@@ -1,0 +1,19 @@
+.screen {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 18px 18px calc(18px + env(safe-area-inset-bottom)) 18px;
+  display: flex;
+  flex-direction: column;
+  animation: screen-in 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+
+.scroll {
+  min-height: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
