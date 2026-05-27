@@ -1,0 +1,221 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Screen } from "@/components/ui/screen";
+import { IconButton } from "@/components/ui/icon-button";
+import { BottomInfo } from "@/components/ui/bottom-info";
+import { useGameState } from "@/components/providers/game-state-provider";
+import { useNow } from "@/hooks/use-now";
+import {
+  COLORS,
+  COUNTDOWN_PENALTY_MS,
+  configKey,
+  shuffle,
+} from "@/lib/config";
+import { formatTime } from "@/lib/format";
+import { getSfx } from "@/lib/sound";
+import { vibrate } from "@/lib/haptics";
+import type { LoseInfo } from "@/lib/types";
+import { TimerPill } from "./timer-pill";
+import { ProgressBar } from "./progress-bar";
+import { GameBoard } from "./game-board";
+import styles from "./game-screen.module.css";
+
+export interface WinPayload {
+  time: number;
+  wrong: number;
+  config: string;
+  remaining: number | null;
+}
+
+interface GameScreenProps {
+  onWin: (payload: WinPayload) => void;
+  onLose: (info: LoseInfo) => void;
+  onExit: () => void;
+}
+
+export function GameScreen({ onWin, onLose, onExit }: GameScreenProps) {
+  const { state } = useGameState();
+  // Congela la configuración al iniciar la partida.
+  const [cfg] = useState(() => state.settings.game);
+  const haptic = state.settings.haptic;
+
+  const cols = cfg.cols;
+  const total = cols * cols;
+  const isCountdown = cfg.mode === "countdown";
+  const durationMs = (cfg.duration || 300) * 1000;
+
+  const [numbers] = useState(() =>
+    shuffle(Array.from({ length: total }, (_, i) => i + 1)),
+  );
+  const [current, setCurrent] = useState(1);
+  const [done, setDone] = useState<Record<number, string>>({});
+  const [wrongNumber, setWrongNumber] = useState<number | null>(null);
+  const [wrongCount, setWrongCount] = useState(0);
+  const [penaltyMs, setPenaltyMs] = useState(0);
+  const [timerBump, setTimerBump] = useState(false);
+  const [penaltyFlash, setPenaltyFlash] = useState(false);
+
+  const [startTime] = useState(() => Date.now());
+  const endedRef = useRef(false);
+  const now = useNow(true);
+
+  const elapsed = now - startTime;
+  const remaining = Math.max(0, durationMs - elapsed - penaltyMs);
+  const lowTime = isCountdown && remaining > 0 && remaining < 10000;
+
+  const sfx = getSfx();
+
+  // Detección de tiempo agotado (cuenta atrás).
+  useEffect(() => {
+    if (!isCountdown || endedRef.current || remaining > 0) return;
+    endedRef.current = true;
+    sfx.wrong();
+    if (haptic) vibrate([80, 40, 80, 40, 120]);
+    const t = setTimeout(() => {
+      onLose({
+        reason: "timeout",
+        reachedTo: current - 1,
+        timeAt: durationMs,
+        total,
+        config: configKey(cfg),
+      });
+    }, 250);
+    return () => clearTimeout(t);
+  }, [
+    remaining,
+    isCountdown,
+    onLose,
+    current,
+    total,
+    cfg,
+    durationMs,
+    sfx,
+    haptic,
+  ]);
+
+  const handleSelect = useCallback(
+    (num: number) => {
+      if (endedRef.current || done[num]) return;
+
+      if (num === current) {
+        const progress = current / total;
+        const color = COLORS[Math.floor(progress * COLORS.length) % COLORS.length];
+        setDone((prev) => ({ ...prev, [num]: color }));
+        sfx.tap(progress);
+        if (haptic) vibrate(15);
+        setTimerBump(true);
+        setTimeout(() => setTimerBump(false), 380);
+
+        if (current === total) {
+          endedRef.current = true;
+          const finalTime = Date.now() - startTime + penaltyMs;
+          sfx.win();
+          if (haptic) vibrate([30, 60, 30, 60, 80]);
+          setTimeout(
+            () =>
+              onWin({
+                time: finalTime,
+                wrong: wrongCount,
+                config: configKey(cfg),
+                remaining: isCountdown ? Math.max(0, durationMs - finalTime) : null,
+              }),
+            350,
+          );
+        } else {
+          setCurrent((c) => c + 1);
+        }
+      } else {
+        sfx.wrong();
+        if (haptic) vibrate([60, 30, 60]);
+        setWrongNumber(num);
+        setTimeout(() => setWrongNumber(null), 400);
+        setWrongCount((c) => c + 1);
+
+        if (cfg.mode === "classic") {
+          endedRef.current = true;
+          setTimeout(() => {
+            onLose({
+              reason: "mistake",
+              reachedTo: current - 1,
+              timeAt: Date.now() - startTime,
+              tapped: num,
+              expected: current,
+              total,
+              config: configKey(cfg),
+            });
+          }, 520);
+        } else if (isCountdown) {
+          setPenaltyMs((p) => p + COUNTDOWN_PENALTY_MS);
+          setPenaltyFlash(true);
+          setTimeout(() => setPenaltyFlash(false), 600);
+        }
+      }
+    },
+    [
+      current,
+      done,
+      onLose,
+      onWin,
+      haptic,
+      sfx,
+      total,
+      cfg,
+      wrongCount,
+      isCountdown,
+      durationMs,
+      penaltyMs,
+      startTime,
+    ],
+  );
+
+  const completedCount = current - 1;
+  const pct = Math.round((completedCount / total) * 100);
+  const timerLabel = isCountdown ? formatTime(remaining) : formatTime(elapsed);
+  const showErrors = (cfg.mode === "relax" || isCountdown) && wrongCount > 0;
+
+  return (
+    <Screen label="02 Game">
+      <div className={styles.head}>
+        <div className={styles.left}>
+          <IconButton onClick={onExit} title="Salir">
+            ←
+          </IconButton>
+        </div>
+        <div className={styles.center}>
+          <TimerPill
+            label={timerLabel}
+            bump={timerBump}
+            low={lowTime}
+            penalty={penaltyFlash}
+            showIcon={isCountdown}
+          />
+        </div>
+        <div className={styles.right}>
+          {showErrors && (
+            <div className={styles.errorBadge} title="Errores">
+              ✕{wrongCount}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <ProgressBar pct={pct} />
+
+      <GameBoard
+        numbers={numbers}
+        cols={cols}
+        done={done}
+        wrongNumber={wrongNumber}
+        onSelect={handleSelect}
+      />
+
+      <BottomInfo>
+        {cfg.mode === "classic" && "¡cuidado, un error termina la partida!"}
+        {cfg.mode === "relax" && "Modo relax · sigue aunque te equivoques"}
+        {isCountdown &&
+          `Cuenta atrás · cada error suma +${COUNTDOWN_PENALTY_MS / 1000}s`}
+      </BottomInfo>
+    </Screen>
+  );
+}
