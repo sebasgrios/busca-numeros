@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { Screen } from "@/components/ui/screen";
 import { TopBar } from "@/components/ui/top-bar";
 import { IconButton } from "@/components/ui/icon-button";
@@ -9,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { BottomInfo } from "@/components/ui/bottom-info";
 import { Backdrop } from "@/components/ui/backdrop";
 import { useGameState } from "@/components/providers/game-state-provider";
+import { useClientValue } from "@/hooks/use-client-value";
 import { COLORS, configKey, configLabel, shuffle } from "@/lib/config";
 import { formatTime } from "@/lib/format";
 import styles from "./home-screen.module.css";
@@ -32,7 +32,9 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
   const best = recordsForCfg.slice().sort((a, b) => a.time - b.time)[0]?.time;
   const wins = recordsForCfg.length;
 
-  const sample = useMemo(() => shuffle(LOGO_SEED).slice(0, 9), []);
+  const sample =
+    useClientValue(() => shuffle(LOGO_SEED).slice(0, 9)) ??
+    LOGO_SEED.slice(0, 9);
 
   return (
     <Screen label="01 Home" className={styles.home}>

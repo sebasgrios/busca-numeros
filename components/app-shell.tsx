@@ -1,16 +1,20 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import type { Screen } from "@/lib/types";
+import type { LoseInfo, Screen, WinInfo } from "@/lib/types";
 import { getSfx } from "@/lib/sound";
 import { useGameState } from "@/components/providers/game-state-provider";
 import { HomeScreen } from "@/components/screens/home/home-screen";
 import { GameScreen } from "@/components/screens/game/game-screen";
+import { VictoryScreen } from "@/components/screens/result/victory-screen";
+import { LoseScreen } from "@/components/screens/result/lose-screen";
 
 export function AppShell() {
   const { registerWin, registerLoss } = useGameState();
   const [screen, setScreen] = useState<Screen>("home");
   const [gameId, setGameId] = useState(0);
+  const [winInfo, setWinInfo] = useState<WinInfo | null>(null);
+  const [loseInfo, setLoseInfo] = useState<LoseInfo | null>(null);
 
   const go = useCallback((next: Screen) => {
     getSfx().click();
@@ -28,15 +32,32 @@ export function AppShell() {
       <GameScreen
         key={`g-${gameId}`}
         onWin={(payload) => {
-          registerWin(payload);
-          setScreen("home");
+          setWinInfo(registerWin(payload));
+          setScreen("win");
         }}
-        onLose={() => {
+        onLose={(info) => {
           registerLoss();
-          setScreen("home");
+          setLoseInfo(info);
+          setScreen("lose");
         }}
         onExit={() => go("home")}
       />
+    );
+  }
+
+  if (screen === "win" && winInfo) {
+    return (
+      <VictoryScreen
+        info={winInfo}
+        onAgain={startGame}
+        onHome={() => go("home")}
+      />
+    );
+  }
+
+  if (screen === "lose" && loseInfo) {
+    return (
+      <LoseScreen info={loseInfo} onAgain={startGame} onHome={() => go("home")} />
     );
   }
 
