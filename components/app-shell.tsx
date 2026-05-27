@@ -10,6 +10,7 @@ import { GameScreen } from "@/components/screens/game/game-screen";
 import { VictoryScreen } from "@/components/screens/result/victory-screen";
 import { LoseScreen } from "@/components/screens/result/lose-screen";
 import { RecordsScreen } from "@/components/screens/records/records-screen";
+import { SettingsScreen } from "@/components/screens/settings/settings-screen";
 
 export function AppShell() {
   const { state, registerWin, registerLoss, clearRecords } = useGameState();
@@ -87,6 +88,10 @@ export function AppShell() {
     return withToast(
       <RecordsScreen onHome={() => go("home")} onClear={handleClearRecords} />,
     );
+  }
+
+  if (screen === "settings") {
+    return withToast(<SettingsScreen onHome={() => go("home")} />);
   }
 
   return withToast(
