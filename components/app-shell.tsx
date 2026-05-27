@@ -4,17 +4,20 @@ import { useCallback, useState } from "react";
 import type { LoseInfo, Screen, WinInfo } from "@/lib/types";
 import { getSfx } from "@/lib/sound";
 import { useGameState } from "@/components/providers/game-state-provider";
+import { Toast } from "@/components/ui/toast";
 import { HomeScreen } from "@/components/screens/home/home-screen";
 import { GameScreen } from "@/components/screens/game/game-screen";
 import { VictoryScreen } from "@/components/screens/result/victory-screen";
 import { LoseScreen } from "@/components/screens/result/lose-screen";
+import { RecordsScreen } from "@/components/screens/records/records-screen";
 
 export function AppShell() {
-  const { registerWin, registerLoss } = useGameState();
+  const { state, registerWin, registerLoss, clearRecords } = useGameState();
   const [screen, setScreen] = useState<Screen>("home");
   const [gameId, setGameId] = useState(0);
   const [winInfo, setWinInfo] = useState<WinInfo | null>(null);
   const [loseInfo, setLoseInfo] = useState<LoseInfo | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
 
   const go = useCallback((next: Screen) => {
     getSfx().click();
@@ -26,6 +29,25 @@ export function AppShell() {
     setGameId((id) => id + 1);
     setScreen("game");
   }, []);
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast((t) => (t === msg ? null : t)), 1800);
+  }, []);
+
+  const handleClearRecords = useCallback(() => {
+    if (state.records.length === 0) return;
+    if (!window.confirm("¿Borrar todos los récords?")) return;
+    clearRecords();
+    showToast("Récords borrados");
+  }, [state.records.length, clearRecords, showToast]);
+
+  const withToast = (node: React.ReactNode) => (
+    <>
+      {node}
+      {toast && <Toast message={toast} />}
+    </>
+  );
 
   if (screen === "game") {
     return (
@@ -61,11 +83,17 @@ export function AppShell() {
     );
   }
 
-  return (
+  if (screen === "records") {
+    return withToast(
+      <RecordsScreen onHome={() => go("home")} onClear={handleClearRecords} />,
+    );
+  }
+
+  return withToast(
     <HomeScreen
       onPlay={startGame}
       onRecords={() => go("records")}
       onSettings={() => go("settings")}
-    />
+    />,
   );
 }

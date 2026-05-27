@@ -21,3 +21,7 @@
   margin-top: 2px;
   font-variant-numeric: tabular-nums;
 }
+
+.dense .value {
+  font-size: 22px;
+}
