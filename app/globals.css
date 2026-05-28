@@ -93,11 +93,11 @@ html::before {
 }
 
 body {
+  /* Se usa 100dvh (dynamic viewport) para que el body se ajuste al
+     área visible cuando el chrome de Safari aparece/desaparece. El
+     fondo del tema fuera del área visible lo cubre html::before. */
   min-height: 100vh;
   min-height: 100dvh;
-  /* Asegura que el bg llegue siempre al borde inferior aunque el
-     chrome de Safari esté visible. */
-  min-height: 100lvh;
   display: flex;
   align-items: center;
   justify-content: center;
