@@ -10,6 +10,7 @@ import { useGameState } from "@/components/providers/game-state-provider";
 import { COUNTDOWN_OPTIONS, GRID_OPTIONS, MODE_OPTIONS } from "@/lib/config";
 import { getSfx } from "@/lib/sound";
 import { IconArrowLeft } from "@/components/ui/icons";
+import { APP_VERSION } from "@/lib/version";
 import type { GameMode } from "@/lib/types";
 import styles from "./settings-screen.module.css";
 
@@ -131,7 +132,7 @@ export function SettingsScreen({ onHome }: { onHome: () => void }) {
         </div>
       </div>
 
-      <BottomInfo>BuscaNúmeros · v1.2</BottomInfo>
+      <BottomInfo>BuscaNúmeros · v{APP_VERSION}</BottomInfo>
     </Screen>
   );
 }
