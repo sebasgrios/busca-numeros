@@ -61,19 +61,30 @@ body {
   padding: 0;
   font-family: var(--body);
   color: var(--ink);
-  /* En móvil queremos que el bounce/overscroll exponga el fondo del
-     tema (crema en claro, púrpura profundo en oscuro). Se sobreescribe
-     en desktop con el degradado púrpura del marco de teléfono. */
-  background: var(--bg);
+  /* En móvil queremos que el bounce/overscroll y las franjas de
+     safe-area (notch / home indicator) pinten el fondo del tema. Se
+     sobreescribe en desktop con el degradado púrpura del marco. */
+  background-color: var(--bg);
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   user-select: none;
 }
 
+/* El elemento <html> pinta detrás de la barra de estado y el home
+   indicator en iOS Safari. Forzamos que su altura cubra el viewport
+   incluso cuando el body se mide con dvh (que se reduce con el chrome
+   de Safari visible). */
+html {
+  min-height: 100lvh;
+}
+
 body {
   min-height: 100vh;
   min-height: 100dvh;
+  /* Asegura que el bg llegue siempre al borde inferior aunque el
+     chrome de Safari esté visible. */
+  min-height: 100lvh;
   display: flex;
   align-items: center;
   justify-content: center;
