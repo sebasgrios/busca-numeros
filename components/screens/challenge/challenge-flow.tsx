@@ -15,6 +15,7 @@ import { NameModal } from "./name-modal";
 import { WaitingRoom } from "./waiting-room";
 import { MultiplayerGame } from "./multiplayer-game";
 import { PodiumModal } from "./podium-modal";
+import { DuelResultModal } from "./duel-result-modal";
 import { AbandonedModal } from "./abandoned-modal";
 
 type Phase = "choice" | "create" | "join";
@@ -158,13 +159,20 @@ export function ChallengeFlow({ onExit, initialJoinCode }: ChallengeFlowProps) {
     }
 
     // status === "finished"
+    const isDuel = room.snapshot.config.capacity === 2;
     return (
       <>
         <Screen label="09 Room">
           <Backdrop />
           <BottomInfo>Sala {room.snapshot.code}</BottomInfo>
         </Screen>
-        {abandonedOverlay ?? leaveOverlay ?? <PodiumModal onExit={requestLeave} />}
+        {abandonedOverlay ??
+          leaveOverlay ??
+          (isDuel ? (
+            <DuelResultModal onExit={requestLeave} />
+          ) : (
+            <PodiumModal onExit={requestLeave} />
+          ))}
       </>
     );
   }

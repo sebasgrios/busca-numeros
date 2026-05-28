@@ -1,15 +1,10 @@
 "use client";
 
 import { Modal } from "@/components/ui/modal";
-import { Button } from "@/components/ui/button";
 import { useRoom } from "@/components/providers/room-provider";
-import {
-  COLOR_HEX,
-  MIN_PLAYERS,
-  type PodiumEntry,
-} from "@/lib/multiplayer/protocol";
-import { getSfx } from "@/lib/sound";
+import { COLOR_HEX, type PodiumEntry } from "@/lib/multiplayer/protocol";
 import { IconSmile } from "@/components/ui/icons";
+import { ResultActions } from "./result-actions";
 import styles from "./podium-modal.module.css";
 
 interface PodiumModalProps {
@@ -42,7 +37,7 @@ function Column({
 }
 
 export function PodiumModal({ onExit }: PodiumModalProps) {
-  const { snapshot, you, isHost, toggleRematch, start } = useRoom();
+  const { snapshot, you } = useRoom();
 
   if (!snapshot || !you) return null;
 
@@ -50,28 +45,6 @@ export function PodiumModal({ onExit }: PodiumModalProps) {
   const first = podium.find((p) => p.place === 1);
   const second = podium.find((p) => p.place === 2);
   const third = podium.find((p) => p.place === 3);
-
-  const players = snapshot.players;
-  const total = players.length;
-  const readyCount = players.filter((p) => p.rematchReady).length;
-  const allReady = readyCount === total && total >= MIN_PLAYERS;
-  const youReady = you.rematchReady;
-  const counter = `(${readyCount}/${total})`;
-
-  const handleRematch = () => {
-    getSfx().click();
-    toggleRematch();
-  };
-
-  const handleStart = () => {
-    getSfx().click();
-    start();
-  };
-
-  const handleExit = () => {
-    getSfx().click();
-    onExit();
-  };
 
   return (
     <Modal>
@@ -87,23 +60,7 @@ export function PodiumModal({ onExit }: PodiumModalProps) {
       </div>
 
       <div className={styles.actions}>
-        {isHost && youReady ? (
-          <Button
-            variant="primary"
-            block
-            disabled={!allReady}
-            onClick={handleStart}
-          >
-            Iniciar {counter}
-          </Button>
-        ) : (
-          <Button variant="primary" block onClick={handleRematch}>
-            {youReady ? "Esperando…" : "Volver a jugar"} {counter}
-          </Button>
-        )}
-        <Button variant="ghost" block onClick={handleExit}>
-          Salir
-        </Button>
+        <ResultActions onExit={onExit} />
       </div>
     </Modal>
   );
