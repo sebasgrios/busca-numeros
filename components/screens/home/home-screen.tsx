@@ -17,7 +17,6 @@ import {
   IconSwords,
   IconTrophy,
 } from "@/components/ui/icons";
-import { APP_VERSION } from "@/lib/version";
 import styles from "./home-screen.module.css";
 
 interface HomeScreenProps {
@@ -122,7 +121,6 @@ export function HomeScreen({
       </div>
 
       <BottomInfo>{configLabel(cfg)}</BottomInfo>
-      <div className={styles.version}>v{APP_VERSION}</div>
     </Screen>
   );
 }

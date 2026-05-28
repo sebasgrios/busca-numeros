@@ -79,6 +79,19 @@ html {
   min-height: 100lvh;
 }
 
+/* Red de seguridad: capa fija detrás de todo con el color del tema. Si
+   por cualquier motivo (overscroll, transición, glitch de iOS Safari)
+   se filtrase un pixel del fondo por defecto del navegador, queda
+   tapado por esta capa. */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg);
+  z-index: -1;
+  pointer-events: none;
+}
+
 body {
   min-height: 100vh;
   min-height: 100dvh;

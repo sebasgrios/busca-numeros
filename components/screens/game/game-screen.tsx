@@ -246,7 +246,7 @@ export function GameScreen({
         {cfg.mode === "classic" && "¡cuidado, un error termina la partida!"}
         {cfg.mode === "relax" && "Modo relax · sigue aunque te equivoques"}
         {isCountdown &&
-          `Cuenta atrás · cada error suma +${COUNTDOWN_PENALTY_MS / 1000}s`}
+          `Cuenta atrás · cada error resta ${COUNTDOWN_PENALTY_MS / 1000}s`}
       </BottomInfo>
     </Screen>
     {confirmExit && (
