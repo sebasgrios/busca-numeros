@@ -38,10 +38,13 @@ export function GameStateProvider({ children }: { children: React.ReactNode }) {
   const state = useStoreState();
 
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      state.settings.dark ? "dark" : "light",
+    const dark = state.settings.dark;
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    // Sincroniza la barra del navegador (status bar) con el tema activo.
+    const meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"]',
     );
+    if (meta) meta.content = dark ? "#1A1430" : "#FFF3DE";
   }, [state.settings.dark]);
 
   useEffect(() => {

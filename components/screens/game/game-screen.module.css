@@ -21,14 +21,17 @@
 }
 
 .errorBadge {
-  width: 42px;
+  min-width: 42px;
   height: 42px;
+  padding: 0 10px;
   border-radius: 14px;
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: var(--bad);
   color: #fff;
   font-family: var(--display);
+  font-weight: 700;
   font-size: 14px;
   box-shadow: var(--shadow-soft);
 }

@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Screen } from "@/components/ui/screen";
 import { IconButton } from "@/components/ui/icon-button";
 import { BottomInfo } from "@/components/ui/bottom-info";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
+import { IconArrowLeft, IconX } from "@/components/ui/icons";
 import { useGameState } from "@/components/providers/game-state-provider";
 import { useNow } from "@/hooks/use-now";
 import {
@@ -75,6 +77,7 @@ export function GameScreen({
   const [penaltyFlash, setPenaltyFlash] = useState(false);
 
   const [startTime] = useState(() => Date.now());
+  const [confirmExit, setConfirmExit] = useState(false);
   const endedRef = useRef(false);
   const now = useNow(true);
 
@@ -195,11 +198,16 @@ export function GameScreen({
   const showErrors = (cfg.mode === "relax" || isCountdown) && wrongCount > 0;
 
   return (
+    <>
     <Screen label="02 Game">
       <div className={styles.head}>
         <div className={styles.left}>
-          <IconButton onClick={onExit} title="Salir">
-            ←
+          <IconButton
+            onClick={() => setConfirmExit(true)}
+            title="Salir"
+            aria-label="Salir de la partida"
+          >
+            <IconArrowLeft size={20} />
           </IconButton>
         </div>
         <div className={styles.center}>
@@ -214,7 +222,8 @@ export function GameScreen({
         <div className={styles.right}>
           {showErrors && (
             <div className={styles.errorBadge} title="Errores">
-              ✕{wrongCount}
+              <IconX size={14} />
+              {wrongCount}
             </div>
           )}
         </div>
@@ -237,5 +246,19 @@ export function GameScreen({
           `Cuenta atrás · cada error suma +${COUNTDOWN_PENALTY_MS / 1000}s`}
       </BottomInfo>
     </Screen>
+    {confirmExit && (
+      <ConfirmModal
+        title="¿Salir de la partida?"
+        subtitle="Perderás el progreso actual."
+        confirmLabel="Salir"
+        cancelLabel="Seguir jugando"
+        onConfirm={() => {
+          setConfirmExit(false);
+          onExit();
+        }}
+        onCancel={() => setConfirmExit(false)}
+      />
+    )}
+    </>
   );
 }

@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# partykit
+# partykit (cache local de dev)
 /.partykit
