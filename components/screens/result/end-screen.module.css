@@ -65,6 +65,9 @@
   font-size: 13px;
   letter-spacing: 0.04em;
   animation: wiggle 1.6s ease-in-out infinite;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .configChip {

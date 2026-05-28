@@ -9,6 +9,7 @@ import { BottomInfo } from "@/components/ui/bottom-info";
 import { useGameState } from "@/components/providers/game-state-provider";
 import { COUNTDOWN_OPTIONS, GRID_OPTIONS, MODE_OPTIONS } from "@/lib/config";
 import { getSfx } from "@/lib/sound";
+import { IconArrowLeft } from "@/components/ui/icons";
 import type { GameMode } from "@/lib/types";
 import styles from "./settings-screen.module.css";
 
@@ -29,7 +30,9 @@ export function SettingsScreen({ onHome }: { onHome: () => void }) {
   return (
     <Screen scroll label="06 Settings">
       <TopBar>
-        <IconButton onClick={onHome}>←</IconButton>
+        <IconButton onClick={onHome} aria-label="Volver">
+          <IconArrowLeft size={20} />
+        </IconButton>
         <div />
       </TopBar>
       <h2 className={styles.sectionTitle}>Ajustes</h2>

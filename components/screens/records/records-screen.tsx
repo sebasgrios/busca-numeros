@@ -15,6 +15,7 @@ import {
   parseConfigKey,
 } from "@/lib/config";
 import { formatTime } from "@/lib/format";
+import { IconArrowLeft, IconTrash } from "@/components/ui/icons";
 import type { GameMode } from "@/lib/types";
 import styles from "./records-screen.module.css";
 
@@ -56,9 +57,15 @@ export function RecordsScreen({ onHome, onClear }: RecordsScreenProps) {
   return (
     <Screen scroll label="05 Records">
       <TopBar>
-        <IconButton onClick={onHome}>←</IconButton>
-        <IconButton onClick={onClear} title="Borrar récords">
-          🗑
+        <IconButton onClick={onHome} aria-label="Volver">
+          <IconArrowLeft size={20} />
+        </IconButton>
+        <IconButton
+          onClick={onClear}
+          title="Borrar récords"
+          aria-label="Borrar récords"
+        >
+          <IconTrash size={20} />
         </IconButton>
       </TopBar>
       <h2 className={styles.sectionTitle}>Tus récords</h2>
