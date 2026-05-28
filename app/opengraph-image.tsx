@@ -28,40 +28,41 @@ export default async function OpenGraphImage() {
           display: "flex",
           alignItems: "center",
           background: "#FFF3DE",
-          padding: "0 90px",
+          padding: "0 70px",
           fontFamily: "Fredoka, sans-serif",
         }}
       >
-        {/* Tile "12" inclinado */}
+        {/* Tile "12" inclinado, más grande y con más padding interior. */}
         <div
           style={{
             position: "relative",
-            width: 360,
-            height: 360,
+            width: 460,
+            height: 460,
             transform: "rotate(-6deg)",
             display: "flex",
+            flexShrink: 0,
           }}
         >
           <div
             style={{
               position: "absolute",
               inset: 0,
-              borderRadius: 56,
+              borderRadius: 100,
               background: "#C44A2E",
-              transform: "translateY(22px)",
+              transform: "translateY(24px)",
             }}
           />
           <div
             style={{
               position: "absolute",
               inset: 0,
-              borderRadius: 56,
+              borderRadius: 100,
               background: "#FF7B5A",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "#fff",
-              fontSize: 200,
+              fontSize: 220,
               fontWeight: 700,
               letterSpacing: -4,
             }}
@@ -73,7 +74,7 @@ export default async function OpenGraphImage() {
         {/* Brand + tagline */}
         <div
           style={{
-            marginLeft: 80,
+            marginLeft: 90,
             display: "flex",
             flexDirection: "column",
             color: "#2A1B3D",
@@ -81,7 +82,7 @@ export default async function OpenGraphImage() {
         >
           <div
             style={{
-              fontSize: 92,
+              fontSize: 84,
               fontWeight: 700,
               lineHeight: 1,
               letterSpacing: -2,
@@ -97,11 +98,11 @@ export default async function OpenGraphImage() {
               fontSize: 30,
               color: "#6E5E80",
               fontWeight: 700,
-              maxWidth: 600,
+              maxWidth: 480,
               lineHeight: 1.25,
             }}
           >
-            Memoriza el orden. Toca del 1 al 100 contra el reloj.
+            Memoriza el orden. Toca los números en secuencia.
           </div>
         </div>
       </div>

@@ -21,9 +21,9 @@ const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://busca-numeros.pages.dev";
 const SITE_NAME = "BuscaNúmeros";
 const DESCRIPTION =
-  "Juego mobile-first donde memorizas el orden y tocas los números del 1 al 100 contra el reloj. Tres modos (Cuenta atrás, Clásico, Relax), grids 5×5/7×7/10×10 y récords por configuración.";
+  "Juego mobile-first donde memorizas el orden y tocas los números del 1 al 100 en secuencia. Tres modos (Cuenta atrás, Clásico, Relax), grids 5×5/7×7/10×10 y récords por configuración.";
 const SHORT_DESCRIPTION =
-  "Memoriza el orden y toca los números en secuencia contra el reloj.";
+  "Memoriza el orden. Toca los números en secuencia.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
