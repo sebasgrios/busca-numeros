@@ -1,5 +1,46 @@
 .home {
   justify-content: space-between;
+  /* Tres gradientes radiales que recrean el look de los blobs del
+     Backdrop, pero como background-image fija. Sus centros viven en
+     el 25%–75% vertical para que los bordes superior/inferior queden
+     en cremoso puro y el chrome blureado de iOS Safari case con el
+     resto del tema sin franjas. */
+  background-image:
+    radial-gradient(
+      230px 230px at 100% 25%,
+      rgba(255, 201, 60, 0.55),
+      transparent 65%
+    ),
+    radial-gradient(
+      220px 220px at 0% 75%,
+      rgba(255, 123, 90, 0.35),
+      transparent 65%
+    ),
+    radial-gradient(
+      170px 170px at -40px 50%,
+      rgba(79, 209, 165, 0.22),
+      transparent 70%
+    );
+  background-repeat: no-repeat;
+}
+
+[data-theme="dark"] .home {
+  background-image:
+    radial-gradient(
+      230px 230px at 100% 25%,
+      rgba(255, 201, 60, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      220px 220px at 0% 75%,
+      rgba(255, 123, 90, 0.14),
+      transparent 65%
+    ),
+    radial-gradient(
+      170px 170px at -40px 50%,
+      rgba(79, 209, 165, 0.1),
+      transparent 70%
+    );
 }
 
 .hero {
