@@ -6,7 +6,6 @@ import { IconButton } from "@/components/ui/icon-button";
 import { StatCard } from "@/components/ui/stat-card";
 import { Button } from "@/components/ui/button";
 import { BottomInfo } from "@/components/ui/bottom-info";
-import { Backdrop } from "@/components/ui/backdrop";
 import { useGameState } from "@/components/providers/game-state-provider";
 import { useClientValue } from "@/hooks/use-client-value";
 import { COLORS, configKey, configLabel, shuffle } from "@/lib/config";
@@ -50,8 +49,6 @@ export function HomeScreen({
 
   return (
     <Screen label="01 Home" className={styles.home}>
-      <Backdrop />
-
       <TopBar>
         {/* Toggle de tema oculto por accesibilidad. El cambio de modo
             oscuro vive ahora únicamente en Ajustes.
