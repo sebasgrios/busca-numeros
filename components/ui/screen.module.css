@@ -17,3 +17,15 @@
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Marco de teléfono en desktop: el border-radius (38px) del #phone hace
+   que el contenido a 18px de los bordes roce visualmente la curva. Damos
+   un poco más de aire arriba y a los lados para que los iconos del
+   topbar (cog accent, su sombra) queden claramente dentro del marco. */
+@media (min-width: 480px) {
+  .screen {
+    padding-top: 26px;
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+}
