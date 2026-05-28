@@ -11,6 +11,15 @@ import { useGameState } from "@/components/providers/game-state-provider";
 import { useClientValue } from "@/hooks/use-client-value";
 import { COLORS, configKey, configLabel, shuffle } from "@/lib/config";
 import { formatTime } from "@/lib/format";
+import {
+  IconCog,
+  IconMoon,
+  IconPlay,
+  IconSun,
+  IconSwords,
+  IconTrophy,
+} from "@/components/ui/icons";
+import { APP_VERSION } from "@/lib/version";
 import styles from "./home-screen.module.css";
 
 interface HomeScreenProps {
@@ -45,11 +54,12 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
           aria-pressed={state.settings.dark}
           onClick={toggleDark}
           title="Modo oscuro"
+          aria-label="Cambiar tema"
         >
-          {state.settings.dark ? "☀︎" : "☾"}
+          {state.settings.dark ? <IconSun size={20} /> : <IconMoon size={20} />}
         </IconButton>
         <IconButton onClick={onSettings} title="Ajustes" aria-label="Ajustes">
-          ⚙
+          <IconCog size={20} />
         </IconButton>
       </TopBar>
 
@@ -85,17 +95,21 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
 
       <div className={styles.actions}>
         <Button variant="primary" block onClick={onPlay}>
-          ▶&nbsp;&nbsp;Jugar
+          <IconPlay size={20} />
+          Jugar
         </Button>
         <Button variant="ghost" block onClick={onRecords}>
-          🏆&nbsp;&nbsp;Récords
+          <IconTrophy size={20} />
+          Récords
         </Button>
         <Button block comingSoon>
-          ⚔&nbsp;&nbsp;Retar
+          <IconSwords size={20} />
+          Retar
         </Button>
       </div>
 
       <BottomInfo>{configLabel(cfg)}</BottomInfo>
+      <div className={styles.version}>v{APP_VERSION}</div>
     </Screen>
   );
 }

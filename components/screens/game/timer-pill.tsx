@@ -1,3 +1,4 @@
+import { IconStopwatch } from "@/components/ui/icons";
 import styles from "./timer-pill.module.css";
 
 interface TimerPillProps {
@@ -29,7 +30,7 @@ export function TimerPill({
     <div className={classes}>
       {showIcon && (
         <span className={styles.icon} aria-hidden="true">
-          ⏱
+          <IconStopwatch size={18} />
         </span>
       )}
       {label}
