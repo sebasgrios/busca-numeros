@@ -13,7 +13,7 @@ interface MultiplayerGameProps {
 }
 
 export function MultiplayerGame({ onExit }: MultiplayerGameProps) {
-  const { snapshot, youId, sendProgress, sendFinished, sendEliminated, leave } =
+  const { snapshot, youId, sendProgress, sendFinished, sendEliminated } =
     useRoom();
   const [eliminated, setEliminated] = useState(false);
 
@@ -53,10 +53,7 @@ export function MultiplayerGame({ onExit }: MultiplayerGameProps) {
           sendEliminated(info.reachedTo, info.reason);
           setEliminated(true);
         }}
-        onExit={() => {
-          leave();
-          onExit();
-        }}
+        onExit={onExit}
       />
       {eliminated && (
         <div className={styles.overlay} role="status" aria-live="polite">

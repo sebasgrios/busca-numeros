@@ -42,7 +42,7 @@ function Column({
 }
 
 export function PodiumModal({ onExit }: PodiumModalProps) {
-  const { snapshot, you, isHost, toggleRematch, start, leave } = useRoom();
+  const { snapshot, you, isHost, toggleRematch, start } = useRoom();
 
   if (!snapshot || !you) return null;
 
@@ -70,7 +70,6 @@ export function PodiumModal({ onExit }: PodiumModalProps) {
 
   const handleExit = () => {
     getSfx().click();
-    leave();
     onExit();
   };
 
