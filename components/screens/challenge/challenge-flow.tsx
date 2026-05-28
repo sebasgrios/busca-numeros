@@ -14,6 +14,7 @@ import { JoinCodeScreen } from "./join-code-screen";
 import { NameModal } from "./name-modal";
 import { WaitingRoom } from "./waiting-room";
 import { MultiplayerGame } from "./multiplayer-game";
+import { PodiumModal } from "./podium-modal";
 
 type Phase = "choice" | "create" | "join";
 
@@ -93,12 +94,15 @@ export function ChallengeFlow({ onExit, initialJoinCode }: ChallengeFlowProps) {
       );
     }
 
-    // status "finished": implementado en MP7.
+    // status === "finished"
     return (
-      <Screen label="09 Room">
-        <Backdrop />
-        <BottomInfo>Partida finalizada — preparando podio…</BottomInfo>
-      </Screen>
+      <>
+        <Screen label="09 Room">
+          <Backdrop />
+          <BottomInfo>Sala {room.snapshot.code}</BottomInfo>
+        </Screen>
+        <PodiumModal onExit={leaveToChoice} />
+      </>
     );
   }
 
