@@ -13,6 +13,7 @@ import { CreateConfigScreen } from "./create-config-screen";
 import { JoinCodeScreen } from "./join-code-screen";
 import { NameModal } from "./name-modal";
 import { WaitingRoom } from "./waiting-room";
+import { MultiplayerGame } from "./multiplayer-game";
 
 type Phase = "choice" | "create" | "join";
 
@@ -83,11 +84,20 @@ export function ChallengeFlow({ onExit, initialJoinCode }: ChallengeFlowProps) {
       );
     }
 
-    // status "playing" / "finished": implementado en MP6 / MP7.
+    if (status === "playing") {
+      return (
+        <MultiplayerGame
+          key={`r-${room.snapshot.round}`}
+          onExit={leaveToChoice}
+        />
+      );
+    }
+
+    // status "finished": implementado en MP7.
     return (
       <Screen label="09 Room">
         <Backdrop />
-        <BottomInfo>Partida en curso…</BottomInfo>
+        <BottomInfo>Partida finalizada — preparando podio…</BottomInfo>
       </Screen>
     );
   }
