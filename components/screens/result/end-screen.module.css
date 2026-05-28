@@ -1,0 +1,100 @@
+.endcard {
+  margin-top: auto;
+  margin-bottom: auto;
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  padding: 28px 22px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  position: relative;
+}
+
+.emoji {
+  width: 92px;
+  height: 92px;
+  border-radius: 26px;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 44px;
+  color: #fff;
+  background: var(--sun);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1);
+  animation: pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+.lose .emoji {
+  background: var(--bad);
+}
+
+.title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 30px;
+  margin: 0;
+  color: var(--ink);
+}
+
+.sub {
+  color: var(--ink-soft);
+  margin: 0;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.bigTime {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--coral);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.newRecord {
+  background: var(--sun);
+  color: #4b2e0c;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  animation: wiggle 1.6s ease-in-out infinite;
+}
+
+.configChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-accent);
+  color: var(--ink);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.statRow {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+.statRow > * {
+  flex: 1;
+  text-align: left;
+}

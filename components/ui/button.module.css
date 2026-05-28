@@ -1,0 +1,84 @@
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 18px;
+  border: 0;
+  border-radius: 18px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    filter 0.12s ease;
+  letter-spacing: 0.2px;
+}
+
+.primary {
+  background: var(--coral);
+  color: #fff;
+  box-shadow:
+    0 6px 0 #c44a2e,
+    var(--shadow-card);
+}
+.primary:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #c44a2e;
+}
+
+.ghost {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+}
+.ghost:active {
+  transform: translateY(3px);
+  box-shadow: var(--shadow-press);
+}
+
+.secondary {
+  background: var(--sky);
+  color: #0e2c57;
+  box-shadow:
+    0 6px 0 #4a8ad1,
+    var(--shadow-card);
+}
+.secondary:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #4a8ad1;
+}
+
+.block {
+  width: 100%;
+}
+
+.disabled {
+  background: var(--surface);
+  color: var(--ink-soft);
+  box-shadow: var(--shadow-soft);
+  cursor: not-allowed;
+  position: relative;
+  opacity: 0.85;
+}
+.disabled::after {
+  content: "PRÓXIMAMENTE";
+  position: absolute;
+  top: -8px;
+  right: 14px;
+  background: var(--lavender);
+  color: #2a1b3d;
+  font-family: var(--body);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  box-shadow: 0 3px 0 rgba(42, 27, 61, 0.15);
+}
+.disabled:active {
+  transform: none;
+}

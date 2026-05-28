@@ -1,0 +1,72 @@
+.boardWrap {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 6px 0 8px;
+}
+
+.board {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 10), 1fr);
+  gap: var(--cell-gap, 4px);
+  padding: var(--cell-gap, 4px);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  box-shadow:
+    var(--shadow-card),
+    inset 0 0 0 1px var(--line);
+  container-type: inline-size;
+}
+
+.cell {
+  aspect-ratio: 1 / 1;
+  border: 0;
+  border-radius: calc(10cqw / var(--cols) * 0.9);
+  background: var(--surface);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: calc(100cqw / var(--cols) * 0.4);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 0 rgba(42, 27, 61, 0.1);
+  transition:
+    transform 0.1s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.15s ease;
+  font-variant-numeric: tabular-nums;
+  padding: 0;
+}
+
+.cell:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.done {
+  color: transparent;
+  background: var(--c, var(--mint));
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.done::after {
+  content: "";
+  width: 50%;
+  height: 28%;
+  border-left: 2.6px solid #fff;
+  border-bottom: 2.6px solid #fff;
+  transform: rotate(-45deg) translate(0, -10%);
+  position: absolute;
+  animation: checkin 0.25s ease both;
+}
+
+.wrong {
+  animation: shake 0.35s ease;
+  background: var(--bad);
+  color: #fff;
+}
