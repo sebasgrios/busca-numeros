@@ -117,10 +117,15 @@ export function IconTrophy(props: IconProps) {
 export function IconSwords(props: IconProps) {
   return (
     <IconBase {...props}>
-      {/* espada 1: desde top-right hasta center-low + mango */}
-      <path d="M20.5 3.5h-3.6l-9 9 3.6 3.6 9-9zM15 14.5l4 4M16.5 19.5l3 1 1-1-1-3" />
-      {/* espada 2: desde top-left hasta center-low + mango */}
-      <path d="M3.5 3.5h3.6l5.4 5.4M9 14.5l-4 4M7.5 19.5l-3 1-1-1 1-3" />
+      {/* Hojas cruzadas en X */}
+      <path d="M4 4 L20 20" />
+      <path d="M20 4 L4 20" />
+      {/* Guardas perpendiculares, entre hoja y mango */}
+      <path d="M14.5 17.5 L17.5 14.5" />
+      <path d="M6.5 14.5 L9.5 17.5" />
+      {/* Pomos en los extremos de los mangos */}
+      <circle cx="20.5" cy="20.5" r="1.3" fill="currentColor" stroke="none" />
+      <circle cx="3.5" cy="20.5" r="1.3" fill="currentColor" stroke="none" />
     </IconBase>
   );
 }

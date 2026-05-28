@@ -24,3 +24,17 @@
   background: var(--sun);
   color: #4b2e0c;
 }
+
+/* Variante "accent": botón siempre destacado en color coral con sombra
+   ofsetada estilo candy. Para acciones permanentes que queremos resaltar. */
+.accent {
+  background: var(--coral);
+  color: #fff;
+  box-shadow:
+    0 4px 0 #c44a2e,
+    var(--shadow-card);
+}
+.accent:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #c44a2e;
+}

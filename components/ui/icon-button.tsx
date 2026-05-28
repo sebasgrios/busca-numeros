@@ -1,14 +1,26 @@
 import styles from "./icon-button.module.css";
 
-type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Variante visual: "default" (superficie) o "accent" (coral destacado). */
+  variant?: "default" | "accent";
+}
 
 /** Botón cuadrado de icono usado en barras superiores. */
-export function IconButton({ className, children, ...rest }: IconButtonProps) {
+export function IconButton({
+  className,
+  children,
+  variant = "default",
+  ...rest
+}: IconButtonProps) {
+  const classes = [
+    styles.iconbtn,
+    variant === "accent" ? styles.accent : "",
+    className ?? "",
+  ]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <button
-      className={`${styles.iconbtn} ${className ?? ""}`.trim()}
-      {...rest}
-    >
+    <button className={classes} {...rest}>
       {children}
     </button>
   );

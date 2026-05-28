@@ -13,9 +13,7 @@ import { COLORS, configKey, configLabel, shuffle } from "@/lib/config";
 import { formatTime } from "@/lib/format";
 import {
   IconCog,
-  IconMoon,
   IconPlay,
-  IconSun,
   IconSwords,
   IconTrophy,
 } from "@/components/ui/icons";
@@ -31,7 +29,7 @@ interface HomeScreenProps {
 const LOGO_SEED = [7, 3, 12, 9, 1, 4, 11, 2, 8];
 
 export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
-  const { state, toggleDark } = useGameState();
+  const { state } = useGameState();
   const cfg = state.settings.game;
   const key = configKey(cfg);
 
@@ -50,6 +48,8 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
       <Backdrop />
 
       <TopBar>
+        {/* Toggle de tema oculto por accesibilidad. El cambio de modo
+            oscuro vive ahora únicamente en Ajustes.
         <IconButton
           aria-pressed={state.settings.dark}
           onClick={toggleDark}
@@ -58,7 +58,14 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
         >
           {state.settings.dark ? <IconSun size={20} /> : <IconMoon size={20} />}
         </IconButton>
-        <IconButton onClick={onSettings} title="Ajustes" aria-label="Ajustes">
+        */}
+        <div />
+        <IconButton
+          variant="accent"
+          onClick={onSettings}
+          title="Ajustes"
+          aria-label="Ajustes"
+        >
           <IconCog size={20} />
         </IconButton>
       </TopBar>
