@@ -79,10 +79,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FFF3DE" },
-    { media: "(prefers-color-scheme: dark)", color: "#1A1430" },
-  ],
+  // Un único theme-color (sin media-query) que el provider sincroniza
+  // dinámicamente con el modo claro/oscuro de la app. Evita que iOS
+  // Safari aplique un color "del sistema" cuando el modo del sistema y
+  // el de la app no coinciden, lo que dejaba franjas blancas en la
+  // barra de estado y junto al home indicator.
+  themeColor: "#FFF3DE",
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
