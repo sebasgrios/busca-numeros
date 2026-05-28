@@ -34,7 +34,7 @@ export const GRID_OPTIONS: GridOption[] = [
 ];
 
 export const MODE_OPTIONS: ModeOption[] = [
-  { id: "countdown", label: "Cuenta atrás", sub: "contra el reloj" },
+  { id: "countdown", label: "Cuenta atrás", sub: "tiempo limitado" },
   { id: "classic", label: "Clásico", sub: "1 error y pierdes" },
   { id: "relax", label: "Relax", sub: "sin penalización" },
 ];
