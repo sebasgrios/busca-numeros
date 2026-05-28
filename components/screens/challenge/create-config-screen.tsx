@@ -13,8 +13,6 @@ import { getSfx } from "@/lib/sound";
 import { COUNTDOWN_OPTIONS, GRID_OPTIONS, MODE_OPTIONS } from "@/lib/config";
 import {
   DEFAULT_ROOM_CONFIG,
-  MAX_PLAYERS,
-  MIN_PLAYERS,
   type BoardMode,
   type RoomConfig,
 } from "@/lib/multiplayer/protocol";
@@ -25,11 +23,6 @@ interface CreateConfigScreenProps {
   onBack: () => void;
   onSubmit: (config: RoomConfig) => void;
 }
-
-const CAPACITY_OPTIONS = Array.from(
-  { length: MAX_PLAYERS - MIN_PLAYERS + 1 },
-  (_, i) => MIN_PLAYERS + i,
-);
 
 const BOARD_OPTIONS: { value: BoardMode; label: string; sub: string }[] = [
   { value: "shared", label: "Mismo tablero", sub: "carrera justa" },
@@ -62,20 +55,6 @@ export function CreateConfigScreen({
       <SectionTitle>Crear partida</SectionTitle>
 
       <div className={styles.list}>
-        <SettingGroup
-          groupLabel="Jugadores"
-          heading="¿Cuántos jugadores?"
-          help="Número de personas que entrarán en la sala"
-        >
-          <Segmented
-            radio
-            ariaLabel="Número de jugadores"
-            value={config.capacity}
-            onChange={(v) => patch({ capacity: v })}
-            options={CAPACITY_OPTIONS.map((n) => ({ value: n, label: String(n) }))}
-          />
-        </SettingGroup>
-
         <SettingGroup
           groupLabel="Tablero"
           heading="Tamaño del grid"

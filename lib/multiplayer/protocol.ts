@@ -34,7 +34,9 @@ export const DEFAULT_ROOM_CONFIG: RoomConfig = {
   cols: 5,
   mode: "countdown",
   duration: 300,
-  capacity: 2,
+  // Capacidad máxima fija a 4. El UI de creación ya no la expone como
+  // selector; el modal de duelo se decide por el nº real de jugadores.
+  capacity: 4,
   board: "shared",
 };
 

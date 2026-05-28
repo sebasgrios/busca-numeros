@@ -159,7 +159,11 @@ export function ChallengeFlow({ onExit, initialJoinCode }: ChallengeFlowProps) {
     }
 
     // status === "finished"
-    const isDuel = room.snapshot.config.capacity === 2;
+    // El modal de duelo se muestra según el nº real de participantes de
+    // la ronda (podio), no según la capacidad de la sala. Así una sala
+    // configurada a 4 plazas pero jugada por 2 personas también ve el
+    // modal de duelo.
+    const isDuel = (room.snapshot.podium?.length ?? 0) === 2;
     return (
       <>
         <Screen label="09 Room">
