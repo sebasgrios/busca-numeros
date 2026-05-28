@@ -163,11 +163,11 @@ export function IconStopwatch(props: IconProps) {
 
 export function IconSmile(props: IconProps) {
   return (
-    <IconBase mode="mixed" {...props}>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M8.5 14.5s1.4 2 3.5 2 3.5-2 3.5-2" fill="none" stroke="#fff" />
-      <circle cx="9" cy="10.5" r="1.1" fill="#fff" stroke="none" />
-      <circle cx="15" cy="10.5" r="1.1" fill="#fff" stroke="none" />
+    <IconBase {...props}>
+      <circle cx="12" cy="12" r="9.2" />
+      <path d="M8.5 14.5c.8 1.3 2 2 3.5 2s2.7-.7 3.5-2" />
+      <circle cx="9" cy="10.5" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="10.5" r="1.1" fill="currentColor" stroke="none" />
     </IconBase>
   );
 }
