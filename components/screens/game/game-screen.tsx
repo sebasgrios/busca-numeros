@@ -21,6 +21,7 @@ import type { LoseInfo } from "@/lib/types";
 import { TimerPill } from "./timer-pill";
 import { ProgressBar } from "./progress-bar";
 import { GameBoard } from "./game-board";
+import { StartCountdown } from "./start-countdown";
 import styles from "./game-screen.module.css";
 
 export interface WinPayload {
@@ -34,9 +35,16 @@ interface GameScreenProps {
   onWin: (payload: WinPayload) => void;
   onLose: (info: LoseInfo) => void;
   onExit: () => void;
+  /** Si false, el back llama onExit directo y no pausa (el padre confirma). */
+  confirmOnExit?: boolean;
 }
 
-export function GameScreen({ onWin, onLose, onExit }: GameScreenProps) {
+export function GameScreen({
+  onWin,
+  onLose,
+  onExit,
+  confirmOnExit = true,
+}: GameScreenProps) {
   const { state } = useGameState();
   // Congela la configuración al iniciar la partida.
   const [cfg] = useState(() => state.settings.game);
@@ -58,20 +66,52 @@ export function GameScreen({ onWin, onLose, onExit }: GameScreenProps) {
   const [timerBump, setTimerBump] = useState(false);
   const [penaltyFlash, setPenaltyFlash] = useState(false);
 
-  const [startTime] = useState(() => Date.now());
+  // started: la partida ha pasado la cuenta atrás 3-2-1-¡YA!
+  const [started, setStarted] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  // Pausa al abrir el ConfirmModal de salida: el timer se congela y al
+  // cancelar se desplaza startTime para descontar la duración de la pausa.
+  const [pausedAt, setPausedAt] = useState(0);
   const [confirmExit, setConfirmExit] = useState(false);
   const endedRef = useRef(false);
-  const now = useNow(true);
+  const active = started && pausedAt === 0;
+  const now = useNow(active);
 
-  const elapsed = now - startTime;
+  const elapsed = started ? now - startTime : 0;
   const remaining = Math.max(0, durationMs - elapsed - penaltyMs);
-  const lowTime = isCountdown && remaining > 0 && remaining < 10000;
+  const lowTime =
+    isCountdown && started && remaining > 0 && remaining < 10000;
 
   const sfx = getSfx();
 
+  const handleCountdownComplete = useCallback(() => {
+    setStartTime(Date.now());
+    setStarted(true);
+  }, []);
+
+  const handleBackClick = () => {
+    if (!confirmOnExit) {
+      onExit();
+      return;
+    }
+    setPausedAt(Date.now());
+    setConfirmExit(true);
+  };
+
+  const handleCancelExit = () => {
+    setStartTime((t) => t + (Date.now() - pausedAt));
+    setPausedAt(0);
+    setConfirmExit(false);
+  };
+
+  const handleConfirmExit = () => {
+    setConfirmExit(false);
+    onExit();
+  };
+
   // Detección de tiempo agotado (cuenta atrás).
   useEffect(() => {
-    if (!isCountdown || endedRef.current || remaining > 0) return;
+    if (!isCountdown || !started || endedRef.current || remaining > 0) return;
     endedRef.current = true;
     sfx.wrong();
     if (haptic) vibrate([80, 40, 80, 40, 120]);
@@ -95,11 +135,12 @@ export function GameScreen({ onWin, onLose, onExit }: GameScreenProps) {
     durationMs,
     sfx,
     haptic,
+    started,
   ]);
 
   const handleSelect = useCallback(
     (num: number) => {
-      if (endedRef.current || done[num]) return;
+      if (endedRef.current || done[num] || !started) return;
 
       if (num === current) {
         const progress = current / total;
@@ -169,6 +210,7 @@ export function GameScreen({ onWin, onLose, onExit }: GameScreenProps) {
       durationMs,
       penaltyMs,
       startTime,
+      started,
     ],
   );
 
@@ -179,66 +221,64 @@ export function GameScreen({ onWin, onLose, onExit }: GameScreenProps) {
 
   return (
     <>
-    <Screen label="02 Game">
-      <div className={styles.head}>
-        <div className={styles.left}>
-          <IconButton
-            onClick={() => setConfirmExit(true)}
-            title="Salir"
-            aria-label="Salir de la partida"
-          >
-            <IconArrowLeft size={20} />
-          </IconButton>
+      <Screen label="02 Game">
+        <div className={styles.head}>
+          <div className={styles.left}>
+            <IconButton
+              onClick={handleBackClick}
+              title="Salir"
+              aria-label="Salir de la partida"
+            >
+              <IconArrowLeft size={20} />
+            </IconButton>
+          </div>
+          <div className={styles.center}>
+            <TimerPill
+              label={timerLabel}
+              bump={timerBump}
+              low={lowTime}
+              penalty={penaltyFlash}
+              showIcon={isCountdown}
+            />
+          </div>
+          <div className={styles.right}>
+            {showErrors && (
+              <div className={styles.errorBadge} title="Errores">
+                <IconX size={14} />
+                {wrongCount}
+              </div>
+            )}
+          </div>
         </div>
-        <div className={styles.center}>
-          <TimerPill
-            label={timerLabel}
-            bump={timerBump}
-            low={lowTime}
-            penalty={penaltyFlash}
-            showIcon={isCountdown}
-          />
-        </div>
-        <div className={styles.right}>
-          {showErrors && (
-            <div className={styles.errorBadge} title="Errores">
-              <IconX size={14} />
-              {wrongCount}
-            </div>
-          )}
-        </div>
-      </div>
 
-      <ProgressBar pct={pct} />
+        <ProgressBar pct={pct} />
 
-      <GameBoard
-        numbers={numbers}
-        cols={cols}
-        done={done}
-        wrongNumber={wrongNumber}
-        onSelect={handleSelect}
-      />
+        <GameBoard
+          numbers={numbers}
+          cols={cols}
+          done={done}
+          wrongNumber={wrongNumber}
+          onSelect={handleSelect}
+        />
 
-      <BottomInfo>
-        {cfg.mode === "classic" && "¡cuidado, un error termina la partida!"}
-        {cfg.mode === "relax" && "Modo relax · sigue aunque te equivoques"}
-        {isCountdown &&
-          `Cuenta atrás · cada error resta ${COUNTDOWN_PENALTY_MS / 1000}s`}
-      </BottomInfo>
-    </Screen>
-    {confirmExit && (
-      <ConfirmModal
-        title="¿Salir de la partida?"
-        subtitle="Perderás el progreso actual."
-        confirmLabel="Salir"
-        cancelLabel="Seguir jugando"
-        onConfirm={() => {
-          setConfirmExit(false);
-          onExit();
-        }}
-        onCancel={() => setConfirmExit(false)}
-      />
-    )}
+        <BottomInfo>
+          {cfg.mode === "classic" && "¡cuidado, un error termina la partida!"}
+          {cfg.mode === "relax" && "Modo relax · sigue aunque te equivoques"}
+          {isCountdown &&
+            `Cuenta atrás · cada error resta ${COUNTDOWN_PENALTY_MS / 1000}s`}
+        </BottomInfo>
+      </Screen>
+      {!started && <StartCountdown onComplete={handleCountdownComplete} />}
+      {confirmExit && (
+        <ConfirmModal
+          title="¿Salir de la partida?"
+          subtitle="Perderás el progreso actual."
+          confirmLabel="Salir"
+          cancelLabel="Seguir jugando"
+          onConfirm={handleConfirmExit}
+          onCancel={handleCancelExit}
+        />
+      )}
     </>
   );
 }

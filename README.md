@@ -1,8 +1,7 @@
 # BuscaNúmeros
 
-Juego mobile-first donde memorizas el orden y tocas los números del 1 al
-N contra el reloj. Construido con Next.js 16 (App Router), React 19 y
-TypeScript.
+Juego mobile-first donde memorizas el orden y tocas los números en
+secuencia. Construido con Next.js 16 (App Router), React 19 y TypeScript.
 
 ## Características
 
