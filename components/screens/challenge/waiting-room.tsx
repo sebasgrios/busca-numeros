@@ -11,6 +11,12 @@ import {
   type PlayerColor,
 } from "@/lib/multiplayer/protocol";
 import { getSfx } from "@/lib/sound";
+import {
+  IconCheck,
+  IconCopy,
+  IconPerson,
+  IconSmile,
+} from "@/components/ui/icons";
 import styles from "./waiting-room.module.css";
 
 interface Slot {
@@ -96,7 +102,7 @@ export function WaitingRoom({ onRequestClose }: { onRequestClose: () => void }) 
               className={styles.avatar}
               style={{ background: COLOR_HEX[s.color] }}
             >
-              {s.name ? "🙂" : "👤"}
+              {s.name ? <IconSmile size={28} /> : <IconPerson size={28} />}
             </div>
             <span className={styles.name}>{s.name ?? "Esperando…"}</span>
             {s.name && (
@@ -111,7 +117,7 @@ export function WaitingRoom({ onRequestClose }: { onRequestClose: () => void }) 
       <button className={styles.codeRow} onClick={copyCode} title="Copiar código">
         {code}
         <span className={styles.codeIcon} aria-hidden="true">
-          {copied ? "✓" : "⧉"}
+          {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
         </span>
       </button>
       <p className={styles.codeHint}>

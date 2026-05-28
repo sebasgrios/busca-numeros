@@ -5,6 +5,7 @@ import { useRoom } from "@/components/providers/room-provider";
 import { GameScreen } from "@/components/screens/game/game-screen";
 import type { ProgressMarker } from "@/components/screens/game/progress-bar";
 import { COLOR_HEX } from "@/lib/multiplayer/protocol";
+import { IconX } from "@/components/ui/icons";
 import type { GameConfig } from "@/lib/types";
 import styles from "./eliminated-overlay.module.css";
 
@@ -47,6 +48,7 @@ export function MultiplayerGame({ onExit }: MultiplayerGameProps) {
         configOverride={cfg}
         seed={snapshot.seed}
         markers={markers}
+        confirmOnExit={false}
         onProgress={(completed) => sendProgress(completed)}
         onWin={({ time }) => sendFinished(time)}
         onLose={(info) => {
@@ -58,7 +60,9 @@ export function MultiplayerGame({ onExit }: MultiplayerGameProps) {
       {eliminated && (
         <div className={styles.overlay} role="status" aria-live="polite">
           <div className={styles.card}>
-            <div className={styles.emoji}>✕</div>
+            <div className={styles.emoji}>
+              <IconX size={36} />
+            </div>
             <h3 className={styles.title}>¡Eliminado!</h3>
             <p className={styles.sub}>
               Esperando al resto de jugadores para ver el resultado…

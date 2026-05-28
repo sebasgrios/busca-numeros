@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Segmented } from "@/components/ui/segmented";
 import { SectionTitle } from "@/components/ui/section-title";
 import { SettingGroup } from "@/components/ui/setting-group";
+import { IconArrowLeft } from "@/components/ui/icons";
 import { getSfx } from "@/lib/sound";
 import { COUNTDOWN_OPTIONS, GRID_OPTIONS, MODE_OPTIONS } from "@/lib/config";
 import {
@@ -53,8 +54,8 @@ export function CreateConfigScreen({
   return (
     <Screen scroll label="08 Create">
       <TopBar>
-        <IconButton onClick={onBack} title="Volver">
-          ←
+        <IconButton onClick={onBack} title="Volver" aria-label="Volver">
+          <IconArrowLeft size={20} />
         </IconButton>
         <div />
       </TopBar>

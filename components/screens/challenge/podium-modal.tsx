@@ -9,6 +9,7 @@ import {
   type PodiumEntry,
 } from "@/lib/multiplayer/protocol";
 import { getSfx } from "@/lib/sound";
+import { IconSmile } from "@/components/ui/icons";
 import styles from "./podium-modal.module.css";
 
 interface PodiumModalProps {
@@ -24,18 +25,17 @@ function Column({
 }) {
   const cls =
     place === 1 ? styles.first : place === 2 ? styles.second : styles.third;
-  const medal = place === 1 ? "🥇" : place === 2 ? "🥈" : "🥉";
   return (
     <div className={`${styles.column} ${entry ? "" : styles.empty}`}>
       <div
         className={styles.avatar}
         style={{ background: entry ? COLOR_HEX[entry.color] : "#888" }}
       >
-        {entry ? "🙂" : "—"}
+        {entry ? <IconSmile size={28} /> : "—"}
       </div>
       <div className={styles.name}>{entry?.name ?? "—"}</div>
       <div className={`${styles.pillar} ${cls}`} aria-label={`Puesto ${place}`}>
-        {medal}
+        {place}
       </div>
     </div>
   );

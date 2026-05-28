@@ -7,6 +7,7 @@ import { IconButton } from "@/components/ui/icon-button";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@/components/ui/text-field";
 import { Backdrop } from "@/components/ui/backdrop";
+import { IconArrowLeft, IconKey } from "@/components/ui/icons";
 import type { JoinAvailability } from "@/lib/multiplayer/protocol";
 import styles from "./join-code-screen.module.css";
 
@@ -53,15 +54,15 @@ export function JoinCodeScreen({
     <Screen label="10 Join" className={styles.wrap}>
       <Backdrop blobs={["b2", "b3"]} />
       <TopBar>
-        <IconButton onClick={onBack} title="Volver">
-          ←
+        <IconButton onClick={onBack} title="Volver" aria-label="Volver">
+          <IconArrowLeft size={20} />
         </IconButton>
         <div />
       </TopBar>
 
       <div className={styles.hero}>
         <div className={styles.emoji} aria-hidden="true">
-          🔑
+          <IconKey size={52} />
         </div>
         <h1 className={styles.title}>Unirse a partida</h1>
         <p className={styles.tagline}>Introduce el código de la sala.</p>

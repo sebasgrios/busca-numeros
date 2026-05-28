@@ -43,6 +43,8 @@ interface GameScreenProps {
   onProgress?: (completed: number) => void;
   /** Marcadores de progreso de rivales. */
   markers?: ProgressMarker[];
+  /** Si false, el back llama onExit directo (en MP confirma el padre). */
+  confirmOnExit?: boolean;
 }
 
 export function GameScreen({
@@ -53,6 +55,7 @@ export function GameScreen({
   seed = null,
   onProgress,
   markers,
+  confirmOnExit = true,
 }: GameScreenProps) {
   const { state } = useGameState();
   // Congela la configuración al iniciar la partida.
@@ -203,7 +206,7 @@ export function GameScreen({
       <div className={styles.head}>
         <div className={styles.left}>
           <IconButton
-            onClick={() => setConfirmExit(true)}
+            onClick={() => (confirmOnExit ? setConfirmExit(true) : onExit())}
             title="Salir"
             aria-label="Salir de la partida"
           >
