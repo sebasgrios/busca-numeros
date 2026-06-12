@@ -56,6 +56,16 @@
   width: 100%;
 }
 
+/* Estado deshabilitado nativo (no aplica al botón "próximamente"). */
+.btn:disabled:not(.disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: saturate(0.7);
+}
+.btn:disabled:not(.disabled):active {
+  transform: none;
+}
+
 .disabled {
   background: var(--surface);
   color: var(--ink-soft);

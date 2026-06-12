@@ -12,6 +12,7 @@ function defaultState(): AppState {
   return {
     records: [],
     played: 0,
+    seenHowTo: false,
     settings: { sound: true, haptic: true, dark: false, game: { ...DEFAULT_GAME } },
   };
 }
@@ -79,6 +80,12 @@ export function registerLoss(): void {
 
 export function clearRecords(): void {
   set({ ...state, records: [] });
+}
+
+/** Marca el tutorial de "cómo se juega" como visto (no se repite). */
+export function markHowToSeen(): void {
+  if (state.seenHowTo) return;
+  set({ ...state, seenHowTo: true });
 }
 
 interface RegisterWinInput {

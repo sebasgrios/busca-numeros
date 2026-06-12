@@ -6,6 +6,7 @@ import {
   clearRecords,
   getServerSnapshot,
   getSnapshot,
+  markHowToSeen,
   registerLoss,
   registerWin,
   subscribe,
@@ -30,6 +31,7 @@ export function useGameState() {
     registerWin,
     registerLoss,
     clearRecords,
+    markHowToSeen,
   };
 }
 

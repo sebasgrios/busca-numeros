@@ -29,7 +29,7 @@ Este es el **punto de entrada único** para la documentación del proyecto. Cada
 | 04 | [`screens-and-flows.md`](./screens-and-flows.md) | Implementas o cambias una pantalla: Home, Game, Result, Records, Settings o cualquier paso de Retar.    |
 | 05 | [`state.md`](./state.md)                         | Tocas el estado global, la persistencia en localStorage o el store de tiempo real.                      |
 | 06 | [`gameplay.md`](./gameplay.md)                   | Cambias mecánicas: modos (Cuenta atrás/Clásico/Relax), timer, cuenta atrás 3-2-1, pausa, victoria.       |
-| 07 | [`multiplayer.md`](./multiplayer.md)             | Cambios en la rama `multiplayer`: protocolo, servidor PartyKit, sala, podio vs duelo, revancha.         |
+| 07 | [`multiplayer.md`](./multiplayer.md)             | Tocas el multijugador (flujo Retar): protocolo, servidor PartyKit, sala, podio vs duelo, revancha.      |
 | 08 | [`seo-meta.md`](./seo-meta.md)                   | Meta tags, Open Graph, Twitter Card, JSON-LD, sitemap, robots, favicon, theme-color.                    |
 | 09 | [`deployment.md`](./deployment.md)               | Despliegue en Cloudflare Pages, despliegue de PartyKit, env vars, branch deploys, custom domains.       |
 | 10 | [`gotchas.md`](./gotchas.md)                     | Quirks de iOS Safari (chrome blur, dvh/lvh/100%, theme-color con media-query, Backdrops…) y aprendizajes. |
@@ -105,7 +105,7 @@ Mapa de keywords frecuentes para enrutar rápido.
 ## Glosario rápido
 
 - **SP** = Single Player (juego individual).
-- **MP** = Multiplayer (rama `multiplayer`).
+- **MP** = Multiplayer (flujo Retar de la app).
 - **Podio** = modal de resultado de ≥3 jugadores (1º/2º/3º).
 - **Duelo** = modal de resultado de 2 jugadores (ganador único + perdedor).
 - **Sala** = room en PartyKit; un Durable Object por sala.

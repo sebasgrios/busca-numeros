@@ -3,26 +3,52 @@
 import { useCallback, useState } from "react";
 import type { LoseInfo, Screen, WinInfo } from "@/lib/types";
 import { getSfx } from "@/lib/sound";
+import { useClientValue } from "@/hooks/use-client-value";
 import { useGameState } from "@/components/providers/game-state-provider";
 import { Toast } from "@/components/ui/toast";
+import { HowToModal } from "@/components/ui/how-to-modal";
 import { HomeScreen } from "@/components/screens/home/home-screen";
 import { GameScreen } from "@/components/screens/game/game-screen";
 import { VictoryScreen } from "@/components/screens/result/victory-screen";
 import { LoseScreen } from "@/components/screens/result/lose-screen";
 import { RecordsScreen } from "@/components/screens/records/records-screen";
 import { SettingsScreen } from "@/components/screens/settings/settings-screen";
+import { RoomProvider } from "@/components/providers/room-provider";
+import { ChallengeFlow } from "@/components/screens/challenge/challenge-flow";
 
 export function AppShell() {
-  const { state, registerWin, registerLoss, clearRecords } = useGameState();
+  const { state, registerWin, registerLoss, clearRecords, markHowToSeen } =
+    useGameState();
   const [screen, setScreen] = useState<Screen>("home");
   const [gameId, setGameId] = useState(0);
   const [winInfo, setWinInfo] = useState<WinInfo | null>(null);
   const [loseInfo, setLoseInfo] = useState<LoseInfo | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [joinDismissed, setJoinDismissed] = useState(false);
+
+  // Deep link de invitación: /?join=CODE (solo en cliente, evita mismatch).
+  const deepJoin = useClientValue(() => {
+    const c = new URLSearchParams(window.location.search).get("join");
+    return c ? c.toUpperCase().slice(0, 4) : null;
+  });
+  const inDeepJoin = !!deepJoin && !joinDismissed;
+
+  // Solo tras montar en cliente conocemos el estado real (localStorage); evita
+  // renderizar el tutorial en SSR y un desajuste de hidratación.
+  const hydrated = useClientValue(() => true) ?? false;
 
   const go = useCallback((next: Screen) => {
     getSfx().click();
     setScreen(next);
+  }, []);
+
+  const exitChallenge = useCallback(() => {
+    getSfx().click();
+    setJoinDismissed(true);
+    if (typeof window !== "undefined" && window.location.search) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+    setScreen("home");
   }, []);
 
   const startGame = useCallback(() => {
@@ -94,11 +120,26 @@ export function AppShell() {
     return withToast(<SettingsScreen onHome={() => go("home")} />);
   }
 
+  if (screen === "challenge" || inDeepJoin) {
+    return (
+      <RoomProvider>
+        <ChallengeFlow
+          onExit={exitChallenge}
+          initialJoinCode={inDeepJoin ? deepJoin : undefined}
+        />
+      </RoomProvider>
+    );
+  }
+
   return withToast(
-    <HomeScreen
-      onPlay={startGame}
-      onRecords={() => go("records")}
-      onSettings={() => go("settings")}
-    />,
+    <>
+      <HomeScreen
+        onPlay={startGame}
+        onRecords={() => go("records")}
+        onSettings={() => go("settings")}
+        onChallenge={() => go("challenge")}
+      />
+      {hydrated && !state.seenHowTo && <HowToModal onClose={markHowToSeen} />}
+    </>,
   );
 }

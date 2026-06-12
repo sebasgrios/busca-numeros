@@ -10,6 +10,7 @@ import { useGameState } from "@/components/providers/game-state-provider";
 import { useClientValue } from "@/hooks/use-client-value";
 import { COLORS, configKey, configLabel, shuffle } from "@/lib/config";
 import { formatTime } from "@/lib/format";
+import { getSfx } from "@/lib/sound";
 import {
   IconCog,
   IconPlay,
@@ -22,11 +23,17 @@ interface HomeScreenProps {
   onPlay: () => void;
   onRecords: () => void;
   onSettings: () => void;
+  onChallenge: () => void;
 }
 
 const LOGO_SEED = [7, 3, 12, 9, 1, 4, 11, 2, 8];
 
-export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
+export function HomeScreen({
+  onPlay,
+  onRecords,
+  onSettings,
+  onChallenge,
+}: HomeScreenProps) {
   const { state } = useGameState();
   const cfg = state.settings.game;
   const key = configKey(cfg);
@@ -67,15 +74,21 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
       </TopBar>
 
       <div className={styles.hero}>
+        {/* Easter egg: los tiles del logo son pulsables y suenan como un
+            pequeño instrumento (una nota por posición). No hay orden ni
+            acierto/fallo, solo el sonido. */}
         <div className={styles.logoArt} aria-hidden="true">
           {sample.map((n, i) => (
-            <div
+            <button
               key={i}
+              type="button"
+              tabIndex={-1}
               className={styles.tile}
               style={{ background: COLORS[i % COLORS.length] }}
+              onClick={() => getSfx().tap(i / (sample.length - 1))}
             >
               {n}
-            </div>
+            </button>
           ))}
         </div>
         <h1 className={styles.brand}>
@@ -105,7 +118,7 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
           <IconTrophy size={20} />
           Récords
         </Button>
-        <Button block comingSoon>
+        <Button variant="secondary" block onClick={onChallenge}>
           <IconSwords size={20} />
           Retar
         </Button>

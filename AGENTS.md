@@ -33,15 +33,16 @@ Documentación detallada en **`docs/INDEX.md`** (catálogo + criterios de cuánd
 
 ## 3. Ramas y despliegue
 
-Tres ramas largas:
+Gitflow estándar con dos ramas largas:
 
-| Rama          | Despliegue                                                                                                  |
-| ------------- | ----------------------------------------------------------------------------------------------------------- |
-| `main`        | Cloudflare Pages producción · solo single-player                                                            |
-| `develop`     | rama de integración; PRs `develop → main` cuando hay tanda lista                                            |
-| `multiplayer` | añade el flujo `Retar` + PartyKit (servidor + cliente); despliegue separado en Pages preview/proyecto aparte |
+| Rama      | Despliegue                                                                 |
+| --------- | -------------------------------------------------------------------------- |
+| `main`    | Cloudflare Pages producción · app completa (single-player + multijugador)  |
+| `develop` | rama de integración; PRs `develop → main` cuando hay tanda lista           |
 
-Cuando hay cambios compartidos (todo lo que no es exclusivo del flujo Retar / PartyKit), van a **`develop`** y luego se hace `git merge develop` en `multiplayer`. Detalles en `docs/deployment.md`.
+El **multijugador es una opción más de la app**, no un proyecto aparte: vive en la misma base de código y se despliega junto al resto. Las features (incluida la de Retar) se trabajan en ramas creadas desde `develop` y se integran por PR a `develop`. El frontend va a Cloudflare Pages y el servidor de salas a PartyKit. Detalles en `docs/deployment.md`.
+
+> Histórico: el multijugador se desarrolló en una rama `multiplayer` separada con despliegue propio. Tras la unificación esa separación ya no aplica.
 
 ## 4. Cómo se trabaja en este repo
 
@@ -50,7 +51,7 @@ Cuando hay cambios compartidos (todo lo que no es exclusivo del flujo Retar / Pa
 ```bash
 pnpm install          # usar pnpm (packageManager fijado)
 pnpm dev              # frontend en localhost:3000
-pnpm party:dev        # (solo multiplayer) servidor PartyKit en localhost:1999
+pnpm party:dev        # servidor de salas PartyKit en localhost:1999 (multijugador)
 pnpm build            # build de producción (genera out/ con output: 'export')
 pnpm lint             # ESLint
 ```
@@ -135,7 +136,7 @@ Cuando algo se ve mal en el iPhone real (no en preview), el patrón es:
 | Variable                   | Dónde   | Default                            | Propósito                                                  |
 | -------------------------- | ------- | ---------------------------------- | ---------------------------------------------------------- |
 | `NEXT_PUBLIC_SITE_URL`     | build   | `https://busca-numeros.pages.dev`  | metadataBase, canonical, OG, sitemap, JSON-LD              |
-| `NEXT_PUBLIC_PARTYKIT_HOST`| runtime | `localhost:1999`                   | Host del WebSocket PartyKit (solo rama `multiplayer`)      |
+| `NEXT_PUBLIC_PARTYKIT_HOST`| build   | `localhost:1999`                   | Host del WebSocket PartyKit (servidor de salas, multijugador) |
 
 Configurar en Cloudflare Pages → Settings → Environment variables (por entorno: Production / Preview).
 

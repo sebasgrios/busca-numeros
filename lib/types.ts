@@ -24,10 +24,19 @@ export interface GameRecord {
 export interface AppState {
   records: GameRecord[];
   played: number;
+  /** Si el usuario ya vio el tutorial de "cómo se juega" (1ª visita). */
+  seenHowTo: boolean;
   settings: Settings;
 }
 
-export type Screen = "home" | "game" | "win" | "lose" | "records" | "settings";
+export type Screen =
+  | "home"
+  | "game"
+  | "win"
+  | "lose"
+  | "records"
+  | "settings"
+  | "challenge";
 
 export interface WinInfo {
   time: number;

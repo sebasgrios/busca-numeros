@@ -59,7 +59,7 @@ components/
     result/               # victory-screen, lose-screen (+ end-screen.module.css compartido)
     records/
     settings/
-    challenge/            # (solo multiplayer) choice, create-config, join-code,
+    challenge/            # multijugador: choice, create-config, join-code,
                           # waiting-room, name-modal, multiplayer-game,
                           # podium-modal, duel-result-modal, abandoned-modal,
                           # result-actions, challenge-flow, eliminated-overlay
@@ -105,7 +105,7 @@ docs/                     # documentación (estás aquí)
 
 ### `pnpm-workspace.yaml`
 
-Lleva `allowBuilds:` con `sharp: true`, `unrs-resolver: true`, y en multiplayer también `esbuild` y `workerd`. Sin esto, pnpm 11 ignora los build scripts nativos y el build falla.
+Lleva `allowBuilds:` con `sharp: true`, `unrs-resolver: true`, `esbuild` y `workerd` (estos dos para el bundle del servidor PartyKit). Sin esto, pnpm 11 ignora los build scripts nativos y el build falla.
 
 ### `next.config.ts`
 
@@ -159,7 +159,7 @@ out/
 
 Este `out/` es lo que se sirve desde Cloudflare Pages (Build output directory = `out`).
 
-## Servidor de sala (rama `multiplayer`)
+## Servidor de sala (multijugador)
 
 `party/game-room.ts` se compila con `partykit` (esbuild + workerd). Local: `pnpm party:dev`. Despliegue: `pnpm party:deploy` (Cloudflare). Ver [`multiplayer.md`](./multiplayer.md).
 
