@@ -1,6 +1,44 @@
-/* Misma estructura que Home: TopBar arriba, hero a 32px y actions abajo. */
+/* Misma estructura y fondo que Home: TopBar arriba, hero a 32px, actions abajo.
+   El fondo va como background-image del Screen (siempre detrás del contenido),
+   no con Backdrop, cuyos blobs posicionados se pintaban sobre las tarjetas. */
 .wrap {
   justify-content: space-between;
+  background-image:
+    radial-gradient(
+      230px 230px at 100% 25%,
+      rgba(255, 201, 60, 0.55),
+      transparent 65%
+    ),
+    radial-gradient(
+      220px 220px at 0% 75%,
+      rgba(255, 123, 90, 0.35),
+      transparent 65%
+    ),
+    radial-gradient(
+      170px 170px at -40px 50%,
+      rgba(79, 209, 165, 0.22),
+      transparent 70%
+    );
+  background-repeat: no-repeat;
+}
+
+[data-theme="dark"] .wrap {
+  background-image:
+    radial-gradient(
+      230px 230px at 100% 25%,
+      rgba(255, 201, 60, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      220px 220px at 0% 75%,
+      rgba(255, 123, 90, 0.14),
+      transparent 65%
+    ),
+    radial-gradient(
+      170px 170px at -40px 50%,
+      rgba(79, 209, 165, 0.1),
+      transparent 70%
+    );
 }
 
 .hero {

@@ -1,18 +1,70 @@
+/* Misma estructura y fondo que Home/choice: TopBar arriba, hero a 32px,
+   form abajo. El fondo va como background-image del Screen (siempre detrás
+   del contenido), no con Backdrop. */
 .wrap {
-  justify-content: center;
-  gap: 24px;
+  justify-content: space-between;
+  background-image:
+    radial-gradient(
+      230px 230px at 100% 25%,
+      rgba(255, 201, 60, 0.55),
+      transparent 65%
+    ),
+    radial-gradient(
+      220px 220px at 0% 75%,
+      rgba(255, 123, 90, 0.35),
+      transparent 65%
+    ),
+    radial-gradient(
+      170px 170px at -40px 50%,
+      rgba(79, 209, 165, 0.22),
+      transparent 70%
+    );
+  background-repeat: no-repeat;
+}
+
+[data-theme="dark"] .wrap {
+  background-image:
+    radial-gradient(
+      230px 230px at 100% 25%,
+      rgba(255, 201, 60, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      220px 220px at 0% 75%,
+      rgba(255, 123, 90, 0.14),
+      transparent 65%
+    ),
+    radial-gradient(
+      170px 170px at -40px 50%,
+      rgba(79, 209, 165, 0.1),
+      transparent 70%
+    );
 }
 
 .hero {
+  margin-top: 32px;
   text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
 }
 
-.emoji {
-  font-size: 52px;
-  line-height: 1;
+.badge {
+  width: 84px;
+  height: 84px;
+  margin-bottom: 4px;
+  border-radius: var(--r-xl);
+  background: var(--sky);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.12);
+  transform: rotate(-4deg);
+}
+
+.spacer {
+  flex: 1;
 }
 
 .title {
