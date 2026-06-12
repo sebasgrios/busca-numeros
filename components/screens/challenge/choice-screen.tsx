@@ -39,6 +39,8 @@ export function ChoiceScreen({ onBack, onCreate, onJoin }: ChoiceScreenProps) {
         <p className={styles.tagline}>Reta a tus amigos en la misma tabla.</p>
       </div>
 
+      <div className={styles.spacer} />
+
       <div className={styles.actions}>
         <OptionCard
           color="var(--coral)"

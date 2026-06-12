@@ -1,9 +1,10 @@
+/* Misma estructura que Home: TopBar arriba, hero a 32px y actions abajo. */
 .wrap {
-  justify-content: center;
-  gap: 28px;
+  justify-content: space-between;
 }
 
 .hero {
+  margin-top: 32px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -38,6 +39,10 @@
   color: var(--ink-soft);
   font-weight: 600;
   margin: 0;
+}
+
+.spacer {
+  flex: 1;
 }
 
 .actions {
