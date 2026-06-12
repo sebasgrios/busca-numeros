@@ -1,0 +1,6 @@
+# Cloudflare Pages — cabeceras de respuesta.
+# El OG image se genera con `output: export` como `out/opengraph-image` (sin
+# extensión), por lo que Pages infiere `application/octet-stream`. Forzamos el
+# tipo correcto para que los scrapers de redes lo traten como imagen.
+/opengraph-image
+  Content-Type: image/png
