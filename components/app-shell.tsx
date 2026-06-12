@@ -6,6 +6,7 @@ import { getSfx } from "@/lib/sound";
 import { useClientValue } from "@/hooks/use-client-value";
 import { useGameState } from "@/components/providers/game-state-provider";
 import { Toast } from "@/components/ui/toast";
+import { HowToModal } from "@/components/ui/how-to-modal";
 import { HomeScreen } from "@/components/screens/home/home-screen";
 import { GameScreen } from "@/components/screens/game/game-screen";
 import { VictoryScreen } from "@/components/screens/result/victory-screen";
@@ -16,7 +17,8 @@ import { RoomProvider } from "@/components/providers/room-provider";
 import { ChallengeFlow } from "@/components/screens/challenge/challenge-flow";
 
 export function AppShell() {
-  const { state, registerWin, registerLoss, clearRecords } = useGameState();
+  const { state, registerWin, registerLoss, clearRecords, markHowToSeen } =
+    useGameState();
   const [screen, setScreen] = useState<Screen>("home");
   const [gameId, setGameId] = useState(0);
   const [winInfo, setWinInfo] = useState<WinInfo | null>(null);
@@ -30,6 +32,10 @@ export function AppShell() {
     return c ? c.toUpperCase().slice(0, 4) : null;
   });
   const inDeepJoin = !!deepJoin && !joinDismissed;
+
+  // Solo tras montar en cliente conocemos el estado real (localStorage); evita
+  // renderizar el tutorial en SSR y un desajuste de hidratación.
+  const hydrated = useClientValue(() => true) ?? false;
 
   const go = useCallback((next: Screen) => {
     getSfx().click();
@@ -126,11 +132,14 @@ export function AppShell() {
   }
 
   return withToast(
-    <HomeScreen
-      onPlay={startGame}
-      onRecords={() => go("records")}
-      onSettings={() => go("settings")}
-      onChallenge={() => go("challenge")}
-    />,
+    <>
+      <HomeScreen
+        onPlay={startGame}
+        onRecords={() => go("records")}
+        onSettings={() => go("settings")}
+        onChallenge={() => go("challenge")}
+      />
+      {hydrated && !state.seenHowTo && <HowToModal onClose={markHowToSeen} />}
+    </>,
   );
 }

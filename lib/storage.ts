@@ -12,6 +12,7 @@ function freshState(): AppState {
   return {
     records: [],
     played: 0,
+    seenHowTo: false,
     settings: {
       sound: true,
       haptic: true,
@@ -31,6 +32,7 @@ export function loadState(): AppState {
     return {
       records: parsed.records ?? [],
       played: parsed.played ?? 0,
+      seenHowTo: parsed.seenHowTo ?? false,
       settings: {
         sound: true,
         haptic: true,
