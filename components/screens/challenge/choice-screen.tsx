@@ -56,6 +56,8 @@ export function ChoiceScreen({ onBack, onCreate, onJoin }: ChoiceScreenProps) {
         />
       </div>
 
+      <div className={styles.spacer} />
+
       <BottomInfo>Hasta 4 jugadores</BottomInfo>
     </Screen>
   );

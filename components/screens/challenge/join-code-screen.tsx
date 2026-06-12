@@ -92,6 +92,8 @@ export function JoinCodeScreen({
           {checking ? "Comprobando…" : "Continuar"}
         </Button>
       </div>
+
+      <div className={styles.spacer} />
     </Screen>
   );
 }
