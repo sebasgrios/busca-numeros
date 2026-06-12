@@ -1,11 +1,14 @@
 import type * as Party from "partykit/server";
 import {
   DEFAULT_ROOM_CONFIG,
+  MAX_DURATION,
   MAX_PLAYERS,
+  MIN_DURATION,
   MIN_PLAYERS,
   PLAYER_COLORS,
-  decode,
   encode,
+  safeDecode,
+  sanitizeName,
   type ClientMessage,
   type JoinAvailability,
   type PlayerColor,
@@ -43,15 +46,23 @@ function freshState(): RoomState {
   };
 }
 
+// Saneamiento defensivo: el cliente no es de confianza, así que toda config
+// entrante se acota a valores válidos (también frente a NaN / no-números).
 function clampConfig(c: RoomConfig): RoomConfig {
+  const rawDuration = Number.isFinite(c.duration)
+    ? Math.floor(c.duration)
+    : DEFAULT_ROOM_CONFIG.duration;
+  const rawCapacity = Number.isFinite(c.capacity)
+    ? Math.floor(c.capacity)
+    : DEFAULT_ROOM_CONFIG.capacity;
   return {
-    cols: [5, 7, 10].includes(c.cols) ? c.cols : 5,
+    cols: [5, 7, 10].includes(c.cols) ? c.cols : DEFAULT_ROOM_CONFIG.cols,
     mode:
       c.mode === "countdown" || c.mode === "classic" || c.mode === "relax"
         ? c.mode
-        : "countdown",
-    duration: c.duration > 0 ? c.duration : 300,
-    capacity: Math.min(MAX_PLAYERS, Math.max(MIN_PLAYERS, c.capacity)),
+        : DEFAULT_ROOM_CONFIG.mode,
+    duration: Math.min(MAX_DURATION, Math.max(MIN_DURATION, rawDuration)),
+    capacity: Math.min(MAX_PLAYERS, Math.max(MIN_PLAYERS, rawCapacity)),
     board: c.board === "independent" ? "independent" : "shared",
   };
 }
@@ -94,8 +105,10 @@ export default class GameRoom implements Party.Server {
   }
 
   private broadcastSnapshot() {
+    // El snapshot es idéntico para todos; se construye una sola vez.
+    const room = this.snapshot();
     for (const conn of this.room.getConnections()) {
-      this.send(conn, { type: "snapshot", room: this.snapshot(), you: conn.id });
+      this.send(conn, { type: "snapshot", room, you: conn.id });
     }
   }
 
@@ -120,7 +133,9 @@ export default class GameRoom implements Party.Server {
   }
 
   async onMessage(raw: string, sender: Party.Connection) {
-    const msg = decode<ClientMessage>(raw);
+    // Frame no confiable: ignora JSON inválido o sin un `type` reconocible.
+    const msg = safeDecode<ClientMessage>(raw);
+    if (!msg || typeof msg !== "object" || typeof msg.type !== "string") return;
 
     switch (msg.type) {
       case "create": {
@@ -132,7 +147,7 @@ export default class GameRoom implements Party.Server {
           });
           return;
         }
-        const name = msg.name.trim();
+        const name = sanitizeName(msg.name);
         if (!name) {
           this.send(sender, {
             type: "error",
@@ -176,7 +191,7 @@ export default class GameRoom implements Party.Server {
           });
           return;
         }
-        const name = msg.name.trim();
+        const name = sanitizeName(msg.name);
         if (!name) {
           this.send(sender, {
             type: "error",
@@ -222,8 +237,11 @@ export default class GameRoom implements Party.Server {
       case "progress": {
         const p = this.player(sender.id);
         if (!p || p.status !== "playing") return;
-        p.progress = Math.max(0, Math.min(this.total, msg.progress));
-        await this.save();
+        const next = Number.isFinite(msg.progress) ? msg.progress : 0;
+        p.progress = Math.max(0, Math.min(this.total, next));
+        // El progreso es efímero y de alta frecuencia: se difunde pero no se
+        // persiste (las escrituras a storage del Durable Object son lo caro).
+        // El estado durable lo fijan startRound/endRound.
         this.broadcastSnapshot();
         return;
       }
@@ -234,8 +252,15 @@ export default class GameRoom implements Party.Server {
         if (!p || p.status !== "playing") return;
         p.status = "finished";
         p.progress = this.total;
+        // Tiempo autoritativo: se mide en servidor desde startedAt en lugar de
+        // confiar en msg.time del cliente (anti-trampa). Si por alguna razón no
+        // hay startedAt, se cae a null antes que a un valor manipulable.
+        const winnerTime =
+          this.state.startedAt != null
+            ? Math.max(0, Date.now() - this.state.startedAt)
+            : null;
         // Decisión de producto: la ronda acaba al primer ganador.
-        this.endRound(p.id, msg.time);
+        this.endRound(p.id, winnerTime);
         await this.save();
         this.broadcastSnapshot();
         return;
@@ -246,7 +271,8 @@ export default class GameRoom implements Party.Server {
         const p = this.player(sender.id);
         if (!p || p.status !== "playing") return;
         p.status = "eliminated";
-        p.progress = Math.max(0, Math.min(this.total, msg.progress));
+        const reached = Number.isFinite(msg.progress) ? msg.progress : 0;
+        p.progress = Math.max(0, Math.min(this.total, reached));
         // Si ya nadie sigue jugando, cerramos la ronda por progreso.
         if (!this.state.players.some((x) => x.status === "playing")) {
           this.endRound(null, null);
