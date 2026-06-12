@@ -33,8 +33,11 @@ const C = {
   pink: "#FF8FB8",
 };
 
+// Proporciones del logo del hero (home-screen.module.css) escaladas al card:
+// tile ≈61px → 116, radio 16 → 30, gap 8 → 16, sombra plana 6px → 12px.
 const TILE = 116;
-const GAP = 22;
+const GAP = 16;
+const RADIUS = 30;
 
 type Cell = { color: string; value?: string; check?: boolean };
 
@@ -55,13 +58,6 @@ const GRID: Cell[][] = [
     { color: C.coral, value: "8" },
     { color: C.mint, value: "6" },
   ],
-];
-
-// Rotaciones sutiles por tile para dar el aire "hecho a mano".
-const ROT = [
-  [-3, 2, -2],
-  [3, -2, 2],
-  [-2, 3, -3],
 ];
 
 function Check() {
@@ -100,13 +96,14 @@ export default async function OpenGraphImage() {
             "#FBEFD7",
         }}
       >
-        {/* Rejilla 3×3 de tiles */}
+        {/* Rejilla 3×3 de tiles — inclinada como bloque, igual que el hero. */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             gap: GAP,
             flexShrink: 0,
+            transform: "rotate(-4deg)",
           }}
         >
           {GRID.map((row, r) => (
@@ -117,7 +114,7 @@ export default async function OpenGraphImage() {
                   style={{
                     width: TILE,
                     height: TILE,
-                    borderRadius: 28,
+                    borderRadius: RADIUS,
                     background: cell.color,
                     display: "flex",
                     alignItems: "center",
@@ -125,8 +122,7 @@ export default async function OpenGraphImage() {
                     color: "#fff",
                     fontSize: 60,
                     fontWeight: 700,
-                    transform: `rotate(${ROT[r][c]}deg)`,
-                    boxShadow: "0 16px 24px -10px rgba(150,110,80,0.45)",
+                    boxShadow: "0 12px 0 rgba(0,0,0,0.12)",
                   }}
                 >
                   {cell.check ? (
