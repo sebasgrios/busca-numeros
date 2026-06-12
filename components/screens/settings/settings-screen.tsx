@@ -6,7 +6,6 @@ import { TopBar } from "@/components/ui/top-bar";
 import { IconButton } from "@/components/ui/icon-button";
 import { Segmented } from "@/components/ui/segmented";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 import { BottomInfo } from "@/components/ui/bottom-info";
 import { HowToModal } from "@/components/ui/how-to-modal";
 import { useGameState } from "@/components/providers/game-state-provider";
@@ -138,16 +137,19 @@ export function SettingsScreen({ onHome }: { onHome: () => void }) {
 
         <div className={styles.group}>
           <div className={styles.groupLabel}>Ayuda</div>
-          <Button
-            variant="ghost"
-            block
+          <button
+            type="button"
+            className={styles.helpBtn}
             onClick={() => {
               getSfx().click();
               setHowTo(true);
             }}
           >
+            <span className={styles.helpChip} aria-hidden="true">
+              ?
+            </span>
             ¿Cómo se juega?
-          </Button>
+          </button>
         </div>
       </div>
 

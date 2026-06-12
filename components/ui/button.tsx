@@ -1,6 +1,6 @@
 import styles from "./button.module.css";
 
-type Variant = "primary" | "ghost" | "secondary";
+type Variant = "primary" | "ghost" | "secondary" | "cyan" | "soft";
 
 interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

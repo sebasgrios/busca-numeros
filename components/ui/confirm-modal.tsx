@@ -26,7 +26,7 @@ export function ConfirmModal({
       <Button variant="primary" block onClick={onConfirm}>
         {confirmLabel}
       </Button>
-      <Button variant="ghost" block onClick={onCancel}>
+      <Button variant="soft" block onClick={onCancel}>
         {cancelLabel}
       </Button>
     </Modal>
