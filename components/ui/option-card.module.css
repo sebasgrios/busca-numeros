@@ -1,0 +1,58 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+.card:active {
+  transform: translateY(4px);
+  box-shadow: var(--shadow-press);
+}
+
+.chip {
+  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+}
+.desc {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--ink-soft);
+  opacity: 0.6;
+}

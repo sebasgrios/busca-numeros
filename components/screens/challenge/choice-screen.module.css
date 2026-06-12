@@ -7,12 +7,21 @@
   text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
 }
 
-.emoji {
-  font-size: 56px;
-  line-height: 1;
+.badge {
+  width: 84px;
+  height: 84px;
+  margin-bottom: 4px;
+  border-radius: var(--r-xl);
+  background: var(--coral);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.12);
+  transform: rotate(-4deg);
 }
 
 .title {
