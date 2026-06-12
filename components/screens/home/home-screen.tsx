@@ -22,11 +22,17 @@ interface HomeScreenProps {
   onPlay: () => void;
   onRecords: () => void;
   onSettings: () => void;
+  onChallenge: () => void;
 }
 
 const LOGO_SEED = [7, 3, 12, 9, 1, 4, 11, 2, 8];
 
-export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
+export function HomeScreen({
+  onPlay,
+  onRecords,
+  onSettings,
+  onChallenge,
+}: HomeScreenProps) {
   const { state } = useGameState();
   const cfg = state.settings.game;
   const key = configKey(cfg);
@@ -105,7 +111,7 @@ export function HomeScreen({ onPlay, onRecords, onSettings }: HomeScreenProps) {
           <IconTrophy size={20} />
           Récords
         </Button>
-        <Button block comingSoon>
+        <Button variant="secondary" block onClick={onChallenge}>
           <IconSwords size={20} />
           Retar
         </Button>

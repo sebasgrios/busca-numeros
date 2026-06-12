@@ -140,7 +140,7 @@ pnpm 11 ignora por defecto los `postinstall`/`install` scripts de paquetes que n
 allowBuilds:
   sharp: true
   unrs-resolver: true
-  esbuild: true     # solo necesario en rama multiplayer (PartyKit)
+  esbuild: true     # para el bundle del servidor PartyKit
   workerd: true     # idem
 ```
 

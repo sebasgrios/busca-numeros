@@ -6,7 +6,7 @@ tags: [multiplayer, partykit, websockets, durable-objects, protocol, room, serve
 
 # Multijugador
 
-> Este documento aplica solo a la rama **`multiplayer`**. En `main`/`develop` el flujo de Retar está oculto (`comingSoon`) y no se importa nada de `lib/multiplayer` ni de `party/` en runtime.
+> El multijugador es una opción más de la app (no un proyecto aparte): el flujo **Retar** está activo en producción y comparte la misma base de código. El servidor de salas (`party/`) y el protocolo (`lib/multiplayer/`) se despliegan junto al resto.
 
 ## Arquitectura
 
@@ -307,7 +307,7 @@ pnpm party:deploy            # despliega game-room.ts a Cloudflare como PartyKit
                              # devuelve un host wss://buscanumeros.<user>.partykit.dev
 ```
 
-El frontend (rama `multiplayer` en Pages) lleva `NEXT_PUBLIC_PARTYKIT_HOST = buscanumeros.<user>.partykit.dev`.
+El frontend (Cloudflare Pages) lleva `NEXT_PUBLIC_PARTYKIT_HOST = buscanumeros.<user>.partykit.dev` en sus env vars de producción.
 
 ## Gotchas
 

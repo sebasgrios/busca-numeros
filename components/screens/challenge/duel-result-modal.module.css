@@ -1,0 +1,76 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.emoji {
+  width: 92px;
+  height: 92px;
+  border-radius: 26px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1);
+  animation: pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+.emojiWin {
+  background: var(--sun);
+}
+.emojiLose {
+  background: var(--lavender);
+}
+
+.title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 28px;
+  margin: 0;
+  color: var(--ink);
+  text-align: center;
+}
+
+.sub {
+  text-align: center;
+  color: var(--ink-soft);
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+}
+
+.bigTime {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--coral);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.winnerAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.12);
+}
+
+.winnerName {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--ink);
+  margin: 0;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+}

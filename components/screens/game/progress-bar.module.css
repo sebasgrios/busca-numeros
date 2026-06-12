@@ -25,3 +25,16 @@
     rgba(255, 255, 255, 0.5) 9.9% 10%
   );
 }
+
+/* Marcadores de progreso de los rivales (color apagado). */
+.ghost {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 4px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  opacity: 0.55;
+  transition: left 0.25s ease;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.4);
+}

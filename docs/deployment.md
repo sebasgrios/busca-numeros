@@ -1,6 +1,6 @@
 ---
 title: Despliegue
-summary: Cloudflare Pages para el frontend (main y multiplayer), PartyKit/Cloudflare para el servidor de salas, variables de entorno, custom domains, validación post-deploy.
+summary: Cloudflare Pages para el frontend, PartyKit/Cloudflare para el servidor de salas, variables de entorno, custom domains, validación post-deploy. Despliegue unificado (single-player + multijugador).
 tags: [deployment, cloudflare, pages, partykit, environment, env, custom-domain, build]
 ---
 
@@ -8,16 +8,16 @@ tags: [deployment, cloudflare, pages, partykit, environment, env, custom-domain,
 
 ## Resumen rápido
 
-| Rama          | Despliegue                                                                       | URL ejemplo                                |
-| ------------- | -------------------------------------------------------------------------------- | ------------------------------------------ |
-| `main`        | Cloudflare Pages — proyecto producción (single-player)                            | `https://busca-numeros.pages.dev`          |
-| `multiplayer` | (a) Preview del mismo proyecto                                                    | `https://multiplayer.busca-numeros.pages.dev` |
-| `multiplayer` | (b) Proyecto Pages separado (recomendado para dominio estable)                    | `https://busca-numeros-mp.pages.dev`       |
-| —             | PartyKit Cloudflare Worker (solo necesario para multiplayer)                      | `https://buscanumeros.<user>.partykit.dev` |
+La app es **un solo proyecto** (single-player + multijugador) con dos piezas de despliegue:
+
+| Componente          | Despliegue                                                  | URL ejemplo                                |
+| ------------------- | ----------------------------------------------------------- | ------------------------------------------ |
+| Frontend            | Cloudflare Pages — proyecto producción (rama `main`)        | `https://busca-numeros.pages.dev`          |
+| Servidor de salas   | PartyKit Cloudflare Worker (multijugador)                   | `https://buscanumeros.<user>.partykit.dev` |
 
 ## Frontend en Cloudflare Pages
 
-### Configuración (vale para ambos proyectos: main y multiplayer)
+### Configuración
 
 | Campo                   | Valor                            |
 | ----------------------- | -------------------------------- |
@@ -33,28 +33,20 @@ tags: [deployment, cloudflare, pages, partykit, environment, env, custom-domain,
 
 | Variable                       | Dónde       | Production                                  | Preview                                                  |
 | ------------------------------ | ----------- | ------------------------------------------- | -------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`         | build-time  | `https://busca-numeros.pages.dev`           | `https://multiplayer.busca-numeros.pages.dev` (o equiv.) |
-| `NEXT_PUBLIC_PARTYKIT_HOST`    | build-time  | (no aplica en main)                         | `buscanumeros.<user>.partykit.dev`                       |
+| `NEXT_PUBLIC_SITE_URL`         | build-time  | `https://busca-numeros.pages.dev`           | URL de preview de la rama (o equiv.)                     |
+| `NEXT_PUBLIC_PARTYKIT_HOST`    | build-time  | `buscanumeros.<user>.partykit.dev`          | `buscanumeros.<user>.partykit.dev`                       |
 | `NODE_VERSION`                 | build-time  | `22` o `24`                                 | `22` o `24`                                              |
+
+> `NEXT_PUBLIC_PARTYKIT_HOST` es necesaria también en Production: el botón "Retar" la usa para conectar al servidor de salas. Si falta, el multijugador apuntaría a `localhost:1999`.
 
 Cuando cambias estas vars, **fuerza un redeploy** (Deployments → Retry deployment del último) porque están baked-in en el build estático.
 
 ### Branch deployments
 
-Cada push a `main` redespliega Production. Cada push a una rama no-productiva genera un **Preview deployment** con URL automática `<branch>.<project>.pages.dev`. Para que `multiplayer` se despliegue como preview hay que:
+Cada push a `main` redespliega Production. Cada push a una rama no-productiva (p. ej. una `feature/*` desde `develop`) genera un **Preview deployment** con URL automática `<branch>.<project>.pages.dev`. Para que los previews funcionen completos:
 
 - Tener habilitadas las preview deployments en el proyecto.
-- Que la rama exista en `origin/multiplayer`.
-- Asegurarse de que `NEXT_PUBLIC_PARTYKIT_HOST` esté definido bajo **Preview** environment variables.
-
-### Alternativa: proyecto Pages dedicado para `multiplayer`
-
-Mejor si quieres un dominio estable (no `multiplayer.busca-numeros.pages.dev`):
-
-1. Cloudflare → Workers & Pages → **Create application → Pages → Connect to Git**.
-2. Mismo repo, **Production branch = `multiplayer`**, mismos build settings.
-3. Project name → `busca-numeros-mp` (genera `busca-numeros-mp.pages.dev`).
-4. Env vars Production con `NEXT_PUBLIC_PARTYKIT_HOST` y `NEXT_PUBLIC_SITE_URL` apuntando a su dominio.
+- Definir `NEXT_PUBLIC_PARTYKIT_HOST` también bajo **Preview** environment variables (si vas a probar multijugador desde el preview).
 
 ### Custom domain
 
@@ -66,10 +58,9 @@ Tras añadir custom domain, **actualiza `NEXT_PUBLIC_SITE_URL`** a esa URL para 
 
 ### Primera vez
 
-Desde local, con la rama `multiplayer`:
+Desde local, en `main`/`develop` (el código del servidor vive en `party/`):
 
 ```bash
-git checkout multiplayer
 pnpm install
 pnpm party:deploy
 ```
@@ -108,12 +99,10 @@ Para ≤4 jugadores por sala y tráfico casual, todo cabe en gratis.
 
 ## Flujo típico de release
 
-1. Trabajar en `develop`. Hacer cambios, commit, push.
-2. (Opcional) PR `develop → main` cuando hay una tanda lista. Mergear en GitHub.
+1. Trabajar en una rama `feature/*` o `fix/*` creada desde `develop`. Commit, push, PR a `develop`.
+2. PR `develop → main` cuando hay una tanda lista. Mergear en GitHub.
 3. Cloudflare Pages auto-redespliega Production en cuanto detecta push a `main`.
-4. (Opcional) Trabajar features de multijugador en `multiplayer`. Merge `develop` cuando hay cambios compartidos.
-5. Pages auto-redespliega Preview/proyecto separado de `multiplayer`.
-6. (Opcional, solo si cambió `party/`) `pnpm party:deploy` para republicar el servidor de salas.
+4. (Solo si cambió `party/`) `pnpm party:deploy` para republicar el servidor de salas.
 
 ## Validación post-deploy
 
@@ -127,7 +116,7 @@ Tras el redeploy, verificar en producción:
   - `<meta property="og:image" content=".../opengraph-image?..."/>`
   - `<script type="application/ld+json">...</script>`
 - iPhone: verificar que las zonas del status bar y home indicator pinten cremoso (no blanco). Ver [`gotchas.md`](./gotchas.md).
-- Compartir el link en un chat de WhatsApp/Telegram: debe aparecer la imagen OG con el tile "12" + brand.
+- Compartir el link en un chat de WhatsApp/Telegram: debe aparecer la imagen OG (rejilla 3×3 de tiles + marca y tagline).
 
 ### Servidor de salas
 
@@ -148,7 +137,6 @@ Si algo está roto en producción y hay que arreglarlo rápido:
 2. Fix + commit + push de la rama hotfix.
 3. PR `hotfix/foo → main`. Merge.
 4. Re-pulear los cambios a `develop`: `git checkout develop && git merge main`.
-5. Repetir para `multiplayer` si afecta.
 
 Históricamente el repo ha funcionado sin hotfix branches — los fixes han ido siempre por `develop → main` (PRs #2 y #5 son ejemplos). Solo recurrir a hotfix si una PR de `develop` está bloqueada por otros cambios sin desplegar.
 

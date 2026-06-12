@@ -27,7 +27,14 @@ export interface AppState {
   settings: Settings;
 }
 
-export type Screen = "home" | "game" | "win" | "lose" | "records" | "settings";
+export type Screen =
+  | "home"
+  | "game"
+  | "win"
+  | "lose"
+  | "records"
+  | "settings"
+  | "challenge";
 
 export interface WinInfo {
   time: number;

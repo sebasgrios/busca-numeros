@@ -12,14 +12,15 @@ import {
   COLORS,
   COUNTDOWN_PENALTY_MS,
   configKey,
+  seededShuffle,
   shuffle,
 } from "@/lib/config";
 import { formatTime } from "@/lib/format";
 import { getSfx } from "@/lib/sound";
 import { vibrate } from "@/lib/haptics";
-import type { LoseInfo } from "@/lib/types";
+import type { GameConfig, LoseInfo } from "@/lib/types";
 import { TimerPill } from "./timer-pill";
-import { ProgressBar } from "./progress-bar";
+import { ProgressBar, type ProgressMarker } from "./progress-bar";
 import { GameBoard } from "./game-board";
 import { StartCountdown } from "./start-countdown";
 import styles from "./game-screen.module.css";
@@ -35,6 +36,14 @@ interface GameScreenProps {
   onWin: (payload: WinPayload) => void;
   onLose: (info: LoseInfo) => void;
   onExit: () => void;
+  /** Configuración explícita (multijugador); por defecto usa los ajustes. */
+  configOverride?: GameConfig;
+  /** Semilla para tablero compartido (multijugador). */
+  seed?: number | null;
+  /** Se llama con el nº de celdas completadas tras cada acierto. */
+  onProgress?: (completed: number) => void;
+  /** Marcadores de progreso de rivales. */
+  markers?: ProgressMarker[];
   /** Si false, el back llama onExit directo y no pausa (el padre confirma). */
   confirmOnExit?: boolean;
 }
@@ -43,11 +52,15 @@ export function GameScreen({
   onWin,
   onLose,
   onExit,
+  configOverride,
+  seed = null,
+  onProgress,
+  markers,
   confirmOnExit = true,
 }: GameScreenProps) {
   const { state } = useGameState();
   // Congela la configuración al iniciar la partida.
-  const [cfg] = useState(() => state.settings.game);
+  const [cfg] = useState(() => configOverride ?? state.settings.game);
   const haptic = state.settings.haptic;
 
   const cols = cfg.cols;
@@ -55,9 +68,10 @@ export function GameScreen({
   const isCountdown = cfg.mode === "countdown";
   const durationMs = (cfg.duration || 300) * 1000;
 
-  const [numbers] = useState(() =>
-    shuffle(Array.from({ length: total }, (_, i) => i + 1)),
-  );
+  const [numbers] = useState(() => {
+    const range = Array.from({ length: total }, (_, i) => i + 1);
+    return seed != null ? seededShuffle(range, seed) : shuffle(range);
+  });
   const [current, setCurrent] = useState(1);
   const [done, setDone] = useState<Record<number, string>>({});
   const [wrongNumber, setWrongNumber] = useState<number | null>(null);
@@ -167,6 +181,7 @@ export function GameScreen({
             350,
           );
         } else {
+          onProgress?.(current);
           setCurrent((c) => c + 1);
         }
       } else {
@@ -211,6 +226,7 @@ export function GameScreen({
       penaltyMs,
       startTime,
       started,
+      onProgress,
     ],
   );
 
@@ -251,7 +267,7 @@ export function GameScreen({
           </div>
         </div>
 
-        <ProgressBar pct={pct} />
+        <ProgressBar pct={pct} markers={markers} />
 
         <GameBoard
           numbers={numbers}
