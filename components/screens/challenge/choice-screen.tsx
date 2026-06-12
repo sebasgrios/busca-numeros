@@ -5,7 +5,6 @@ import { TopBar } from "@/components/ui/top-bar";
 import { IconButton } from "@/components/ui/icon-button";
 import { OptionCard } from "@/components/ui/option-card";
 import { BottomInfo } from "@/components/ui/bottom-info";
-import { Backdrop } from "@/components/ui/backdrop";
 import {
   IconArrowLeft,
   IconKey,
@@ -23,7 +22,6 @@ interface ChoiceScreenProps {
 export function ChoiceScreen({ onBack, onCreate, onJoin }: ChoiceScreenProps) {
   return (
     <Screen label="07 Challenge" className={styles.wrap}>
-      <Backdrop blobs={["b1", "b2"]} />
       <TopBar>
         <IconButton onClick={onBack} title="Volver" aria-label="Volver">
           <IconArrowLeft size={20} />
