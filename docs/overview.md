@@ -53,9 +53,9 @@ Cada combinación `(grid × modo × duración)` guarda su propio top 20 en `loca
 
 Toggle manual desde Ajustes (en Home no aparece para no saturar). Cambia `data-theme="dark"` en `<html>` y actualiza dinámicamente `<meta name="theme-color">` para que la barra de Safari case con el tema.
 
-## Multijugador (rama `multiplayer`)
+## Multijugador
 
-Añade un flujo **Retar** con dos opciones (Crear / Unirse a partida) sobre servidor autoritativo PartyKit. Hasta 4 jugadores por sala con código de 4 caracteres. La cuenta atrás de inicio es la misma que en SP.
+Una opción más de la app: el flujo **Retar** con dos vías (Crear / Unirse a partida) sobre servidor autoritativo PartyKit. Hasta 4 jugadores por sala con código de 4 caracteres. La cuenta atrás de inicio es la misma que en SP.
 
 - Si la ronda la juegan **2 personas** → modal "duelo" (un único ganador celebrado, perdedor ve "ha ganado X").
 - Si la juegan **3+ personas** → modal "podio" (1º/2º/3º con medallas numéricas).
@@ -65,12 +65,11 @@ Detalles en [`multiplayer.md`](./multiplayer.md).
 ## Estado del proyecto
 
 - **Versión actual**: leída de `package.json -> "version"`. Visible en Ajustes al pie.
-- **Ramas**:
-  - `main` — producción Cloudflare Pages, solo SP.
-  - `develop` — integración, base para PRs a main.
-  - `multiplayer` — añade el flujo Retar y PartyKit.
-- **Deploy**:
-  - Frontend en Cloudflare Pages (rama main + opcional preview de multiplayer).
+- **Ramas** (Gitflow):
+  - `main` — producción Cloudflare Pages, app completa (SP + multijugador).
+  - `develop` — integración, base para PRs a main y para nuevas features.
+- **Deploy** (unificado, un solo proyecto):
+  - Frontend en Cloudflare Pages (rama main).
   - Servidor de salas en PartyKit (parte de Cloudflare).
 
 Ver [`deployment.md`](./deployment.md) para los pasos.

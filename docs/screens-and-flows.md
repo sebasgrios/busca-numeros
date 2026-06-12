@@ -13,12 +13,12 @@ tags: [screens, flows, navigation, ui, sp, mp, home, game, records, settings, ch
 ```ts
 type Screen =
   | "home" | "game" | "win" | "lose" | "records" | "settings"
-  | "challenge"; // solo rama multiplayer
+  | "challenge"; // multijugador (flujo Retar)
 ```
 
 Cambios de pantalla → suena `getSfx().click()` y se llama `setScreen(next)`. Los teléfonos no tienen URL, no hay routing por path (la app está siempre en `/`).
 
-**Deep link**: `/?join=CODE` (4 chars) abre directamente el flujo de unirse a sala (solo rama multiplayer). El `AppShell` lo detecta con `useClientValue(() => new URLSearchParams(location.search).get("join"))`.
+**Deep link**: `/?join=CODE` (4 chars) abre directamente el flujo de unirse a sala. El `AppShell` lo detecta con `useClientValue(() => new URLSearchParams(location.search).get("join"))`.
 
 ## Single-player
 
@@ -27,7 +27,7 @@ Cambios de pantalla → suena `getSfx().click()` y se llama `setScreen(next)`. L
 - **Topbar**: solo el cog Ajustes (en variante `accent` coral). El toggle de tema está comentado, se controla desde Settings.
 - **Hero**: mosaico 3×3 de tiles con números aleatorios bobbing + marca "Busca**Números**" + tagline ("Memoriza el orden. Toca del 1 al N.").
 - **Stats**: 2 StatCards (Mejor tiempo · grid actual / Victorias).
-- **Acciones**: 3 botones — Jugar (primary coral), Récords (ghost), Retar (secondary sky; `comingSoon` en develop, activo en multiplayer).
+- **Acciones**: 3 botones — Jugar (primary coral), Récords (ghost), Retar (secondary sky; abre el flujo multijugador).
 - **BottomInfo**: `configLabel(cfg)` ej. "5 × 5 · Cuenta atrás 5 min".
 - **Fondo**: `radial-gradient`s sobre `.home` (no `<Backdrop />`, ver [`design-system.md`](./design-system.md)).
 
@@ -75,12 +75,12 @@ Home
   │                              → "Seguir jugando"  → reanuda
   ├── click "Récords" → Records
   ├── click "Ajustes" → Settings
-  └── click "Retar"   → Challenge (solo multiplayer)
+  └── click "Retar"   → Challenge (multijugador)
 ```
 
 ---
 
-## Multijugador (rama `multiplayer`)
+## Multijugador (flujo Retar)
 
 Toda la lógica de salas vive en `components/screens/challenge/` orquestada por `ChallengeFlow`.
 
