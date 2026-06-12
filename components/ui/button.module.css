@@ -52,6 +52,31 @@
   box-shadow: 0 2px 0 #4a8ad1;
 }
 
+/* Acción secundaria sobre modal: crema, para no fundirse con el fondo blanco. */
+.soft {
+  background: var(--bg-accent);
+  color: var(--ink);
+  box-shadow:
+    0 6px 0 var(--line),
+    var(--shadow-card);
+}
+.soft:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--line);
+}
+
+.cyan {
+  background: var(--cyan);
+  color: #06343b;
+  box-shadow:
+    0 6px 0 #15a0b1,
+    var(--shadow-card);
+}
+.cyan:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #15a0b1;
+}
+
 .block {
   width: 100%;
 }
