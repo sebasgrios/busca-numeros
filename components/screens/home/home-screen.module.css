@@ -64,6 +64,8 @@
 }
 
 .tile {
+  border: none;
+  padding: 0;
   border-radius: 16px;
   display: grid;
   place-items: center;
@@ -73,6 +75,17 @@
   font-size: 26px;
   box-shadow: 0 6px 0 rgba(0, 0, 0, 0.12);
   animation: bob 3.6s ease-in-out infinite;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  /* El feedback de pulsación va por box-shadow/filter, no por transform,
+     porque `bob` ya anima transform y lo sobreescribiría. */
+  transition:
+    box-shadow 0.08s ease,
+    filter 0.08s ease;
+}
+.tile:active {
+  filter: brightness(0.92);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
 }
 .tile:nth-child(odd) {
   animation-delay: -0.6s;

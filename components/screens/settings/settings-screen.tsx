@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { Screen } from "@/components/ui/screen";
 import { TopBar } from "@/components/ui/top-bar";
 import { IconButton } from "@/components/ui/icon-button";
 import { Segmented } from "@/components/ui/segmented";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { BottomInfo } from "@/components/ui/bottom-info";
+import { HowToModal } from "@/components/ui/how-to-modal";
 import { useGameState } from "@/components/providers/game-state-provider";
 import { COUNTDOWN_OPTIONS, GRID_OPTIONS, MODE_OPTIONS } from "@/lib/config";
 import { getSfx } from "@/lib/sound";
@@ -19,6 +22,7 @@ export function SettingsScreen({ onHome }: { onHome: () => void }) {
   const s = state.settings;
   const g = s.game;
   const isCountdown = g.mode === "countdown";
+  const [howTo, setHowTo] = useState(false);
 
   const changeGame = <K extends "cols" | "mode" | "duration">(
     key: K,
@@ -29,6 +33,7 @@ export function SettingsScreen({ onHome }: { onHome: () => void }) {
   };
 
   return (
+    <>
     <Screen scroll label="06 Settings">
       <TopBar>
         <IconButton onClick={onHome} aria-label="Volver">
@@ -130,9 +135,25 @@ export function SettingsScreen({ onHome }: { onHome: () => void }) {
             />
           </div>
         </div>
+
+        <div className={styles.group}>
+          <div className={styles.groupLabel}>Ayuda</div>
+          <Button
+            variant="ghost"
+            block
+            onClick={() => {
+              getSfx().click();
+              setHowTo(true);
+            }}
+          >
+            ¿Cómo se juega?
+          </Button>
+        </div>
       </div>
 
       <BottomInfo>BuscaNúmeros · v{APP_VERSION}</BottomInfo>
     </Screen>
+    {howTo && <HowToModal onClose={() => setHowTo(false)} />}
+    </>
   );
 }

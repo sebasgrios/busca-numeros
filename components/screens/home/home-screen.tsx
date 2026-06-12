@@ -10,6 +10,7 @@ import { useGameState } from "@/components/providers/game-state-provider";
 import { useClientValue } from "@/hooks/use-client-value";
 import { COLORS, configKey, configLabel, shuffle } from "@/lib/config";
 import { formatTime } from "@/lib/format";
+import { getSfx } from "@/lib/sound";
 import {
   IconCog,
   IconPlay,
@@ -73,15 +74,21 @@ export function HomeScreen({
       </TopBar>
 
       <div className={styles.hero}>
+        {/* Easter egg: los tiles del logo son pulsables y suenan como un
+            pequeño instrumento (una nota por posición). No hay orden ni
+            acierto/fallo, solo el sonido. */}
         <div className={styles.logoArt} aria-hidden="true">
           {sample.map((n, i) => (
-            <div
+            <button
               key={i}
+              type="button"
+              tabIndex={-1}
               className={styles.tile}
               style={{ background: COLORS[i % COLORS.length] }}
+              onClick={() => getSfx().tap(i / (sample.length - 1))}
             >
               {n}
-            </div>
+            </button>
           ))}
         </div>
         <h1 className={styles.brand}>

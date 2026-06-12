@@ -3,7 +3,7 @@
 import { Screen } from "@/components/ui/screen";
 import { TopBar } from "@/components/ui/top-bar";
 import { IconButton } from "@/components/ui/icon-button";
-import { Button } from "@/components/ui/button";
+import { OptionCard } from "@/components/ui/option-card";
 import { BottomInfo } from "@/components/ui/bottom-info";
 import { Backdrop } from "@/components/ui/backdrop";
 import {
@@ -32,22 +32,30 @@ export function ChoiceScreen({ onBack, onCreate, onJoin }: ChoiceScreenProps) {
       </TopBar>
 
       <div className={styles.hero}>
-        <div className={styles.emoji} aria-hidden="true">
-          <IconSwords size={56} />
+        <div className={styles.badge} aria-hidden="true">
+          <IconSwords size={44} />
         </div>
         <h1 className={styles.title}>Multijugador</h1>
         <p className={styles.tagline}>Reta a tus amigos en la misma tabla.</p>
       </div>
 
+      <div className={styles.spacer} />
+
       <div className={styles.actions}>
-        <Button variant="primary" block onClick={onCreate}>
-          <IconPlus size={20} />
-          Crear partida
-        </Button>
-        <Button variant="secondary" block onClick={onJoin}>
-          <IconKey size={20} />
-          Unirse a partida
-        </Button>
+        <OptionCard
+          color="var(--coral)"
+          icon={<IconPlus size={26} />}
+          title="Crear partida"
+          desc="Nueva sala con código"
+          onClick={onCreate}
+        />
+        <OptionCard
+          color="var(--sky)"
+          icon={<IconKey size={24} />}
+          title="Unirse a partida"
+          desc="Con un código de 4 letras"
+          onClick={onJoin}
+        />
       </div>
 
       <BottomInfo>Hasta 4 jugadores</BottomInfo>
