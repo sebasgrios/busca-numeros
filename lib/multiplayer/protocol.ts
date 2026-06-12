@@ -4,6 +4,13 @@ import type { GameMode } from "../types";
 export const MAX_PLAYERS = 4;
 export const MIN_PLAYERS = 2;
 
+/** Longitud máxima de un nombre de jugador. */
+export const MAX_NAME_LEN = 20;
+
+/** Cotas de duración de ronda en segundos (límites del servidor). */
+export const MIN_DURATION = 10;
+export const MAX_DURATION = 3600;
+
 export type PlayerColor = "rojo" | "cian" | "amarillo" | "lima";
 
 /** Pool de colores asignables (en orden de preferencia). */
@@ -109,6 +116,32 @@ export function encode(msg: ClientMessage | ServerMessage): string {
 
 export function decode<T>(raw: string): T {
   return JSON.parse(raw) as T;
+}
+
+/** Igual que decode pero devuelve null si el frame no es JSON válido. */
+export function safeDecode<T>(raw: string): T | null {
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Normaliza un nombre recibido del cliente: coerciona a string, elimina
+ * caracteres de control, recorta espacios y trunca a MAX_NAME_LEN. Devuelve
+ * "" si la entrada no es un nombre válido.
+ */
+export function sanitizeName(raw: unknown): string {
+  if (typeof raw !== "string") return "";
+  let out = "";
+  for (const ch of raw) {
+    const code = ch.codePointAt(0) ?? 0;
+    // Salta controles C0 (0x00-0x1F) y DEL (0x7F).
+    if (code < 0x20 || code === 0x7f) continue;
+    out += ch;
+  }
+  return out.trim().slice(0, MAX_NAME_LEN);
 }
 
 /** Genera un código de sala de 4 caracteres sin caracteres ambiguos. */
