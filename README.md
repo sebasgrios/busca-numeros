@@ -1,35 +1,63 @@
-# BuscaNúmeros
+<div align="center">
 
-Juego mobile-first donde memorizas el orden y tocas los números en
-secuencia. Construido con Next.js 16 (App Router), React 19 y TypeScript.
+# 🔢 BuscaNúmeros
 
-## Características
+<img src="docs/assets/og.png" alt="BuscaNúmeros — Memoriza el orden" width="640">
 
-- **Tres modos de juego**: Cuenta atrás (con penalización por error),
-  Clásico (un error y pierdes) y Relax (sin penalización).
-- **Grids 5×5, 7×7 y 10×10** con tablero adaptativo por container queries.
-- **Récords por configuración** con filtros por grid, modo y duración.
-- **Sonido** sintetizado vía Web Audio, **vibración háptica** y **modo
-  oscuro**, todo persistido en `localStorage`.
+**Memoriza el orden. Toca los números en secuencia. Bate tu récord.**
 
-## Desarrollo
+Juego *mobile-first* de memoria y velocidad, construido con Next.js 16, React 19 y TypeScript.
+
+<br>
+
+![Next.js](https://img.shields.io/badge/Next.js-16-000?logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white)
+
+</div>
+
+---
+
+## ✨ Características
+
+| | |
+|---|---|
+| 🎮 **Tres modos** | Cuenta atrás (penaliza el error), Clásico (un fallo y pierdes) y Relax (sin presión). |
+| 🔲 **Grids adaptativos** | Tableros 5×5, 7×7 y 10×10 que se ajustan vía *container queries*. |
+| 🏆 **Récords** | Marcas guardadas por configuración, con filtros por grid, modo y duración. |
+| 🔊 **Feedback** | Sonido sintetizado con Web Audio, vibración háptica y modo oscuro. |
+| 💾 **Persistencia** | Ajustes y récords se conservan en `localStorage`. |
+
+## 🚀 Empezar
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000).
+Abre **[localhost:3000](http://localhost:3000)** y a jugar.
 
 ```bash
 pnpm build   # build de producción
 pnpm lint    # análisis estático
 ```
 
-## Estructura
+## 🗂️ Estructura
 
-- `app/` — layout, estilos globales (tokens y animaciones) y la página.
-- `components/ui/` — primitivas reutilizables (Button, Segmented, Switch…).
-- `components/screens/` — pantallas (home, game, result, records, settings).
-- `lib/` — dominio: tipos, configuración, store, audio, háptica y formato.
-- `hooks/` — hooks compartidos (`useNow`, `useClientValue`).
+```
+app/                 layout, estilos globales (tokens y animaciones) y página
+components/
+  ui/                primitivas reutilizables (Button, Segmented, Switch…)
+  screens/           pantallas (home, game, result, records, settings)
+lib/                 dominio: tipos, config, store, audio, háptica y formato
+hooks/               hooks compartidos (useNow, useClientValue)
+```
+
+> [!TIP]
+> ¿Vas a trabajar en el proyecto? Empieza por [`AGENTS.md`](AGENTS.md) y la documentación detallada en [`docs/INDEX.md`](docs/INDEX.md).
+
+<div align="center">
+<br>
+<sub>Hecho con ☕ y un poco de obsesión por los récords.</sub>
+</div>
