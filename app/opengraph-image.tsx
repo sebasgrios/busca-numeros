@@ -62,9 +62,13 @@ export default async function OpenGraphImage() {
               alignItems: "center",
               justifyContent: "center",
               color: "#fff",
-              fontSize: 220,
+              fontSize: 180,
               fontWeight: 700,
-              letterSpacing: -4,
+              letterSpacing: -2,
+              lineHeight: 1,
+              // Las cifras no tienen descendente, así que dentro de su caja de
+              // línea quedan ópticamente altas; bajamos un pelín para centrar.
+              paddingTop: 16,
             }}
           >
             12
