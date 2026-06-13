@@ -57,7 +57,7 @@ export function ResultActions({ onExit }: ResultActionsProps) {
           {youReady ? "Esperando…" : "Volver a jugar"} {counter}
         </Button>
       )}
-      <Button variant="ghost" block onClick={handleExit}>
+      <Button variant="soft" block onClick={handleExit}>
         Salir
       </Button>
     </>
