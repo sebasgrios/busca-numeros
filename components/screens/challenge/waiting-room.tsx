@@ -126,7 +126,7 @@ export function WaitingRoom({ onRequestClose }: { onRequestClose: () => void }) 
 
       {isHost ? (
         <div className={styles.actions}>
-          <Button variant="ghost" block onClick={invite}>
+          <Button variant="cyan" block onClick={invite}>
             Invitar
           </Button>
           <Button
@@ -143,7 +143,7 @@ export function WaitingRoom({ onRequestClose }: { onRequestClose: () => void }) 
         </div>
       ) : (
         <>
-          <Button variant="ghost" block onClick={invite}>
+          <Button variant="cyan" block onClick={invite}>
             Invitar
           </Button>
           <p className={styles.waitHint}>

@@ -99,7 +99,7 @@ export function HowToModal({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className={styles.footer}>
-        <Button variant="ghost" onClick={i === 0 ? onClose : prev}>
+        <Button variant="soft" onClick={i === 0 ? onClose : prev}>
           {i === 0 ? "Saltar" : "Atrás"}
         </Button>
         <Button variant="primary" onClick={next}>
