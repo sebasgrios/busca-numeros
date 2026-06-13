@@ -7,7 +7,7 @@ import styles from "./landing-shell.module.css";
 /** Ancho mínimo del panel de juego: el teléfono se ve completo con aire. */
 const GAME_MIN = 480;
 /** Si la columna de información baja de este ancho, se cierra del todo. */
-const INFO_SNAP = 300;
+const INFO_SNAP = 645;
 /** % de juego a partir del cual la información está oculta. */
 const COLLAPSED = 99.5;
 /** Breakpoint para pasar de "solo juego" a "split con información". */
