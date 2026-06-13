@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <g transform="rotate(-6 64 64)">
+    <rect x="14" y="22" width="100" height="100" rx="22" fill="#C44A2E" />
+    <rect x="14" y="14" width="100" height="100" rx="22" fill="#FF7B5A" />
+    <text x="64" y="92" text-anchor="middle"
+          font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+          font-weight="900" font-size="64" fill="#ffffff">12</text>
+  </g>
+</svg>

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka, Nunito } from "next/font/google";
 import { APP_VERSION } from "@/lib/version";
+import { LandingShell } from "@/components/landing/landing-shell";
 import "./globals.css";
 
 const fredoka = Fredoka({
@@ -124,7 +125,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <div id="phone">{children}</div>
+        <LandingShell>
+          <div id="phone">{children}</div>
+        </LandingShell>
       </body>
     </html>
   );
