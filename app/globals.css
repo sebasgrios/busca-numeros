@@ -14,6 +14,8 @@
 
   /* playful accents */
   --coral: #ff7b5a;
+  /* tono oscuro del coral para el offset "candy" del callout de la landing */
+  --coral-deep: #e0603f;
   --sun: #ffc93c;
   --mint: #4fd1a5;
   --sky: #6bb6ff;
@@ -96,16 +98,16 @@ html::before {
 body {
   /* Se usa 100dvh (dynamic viewport) para que el body se ajuste al
      área visible cuando el chrome de Safari aparece/desaparece. El
-     fondo del tema fuera del área visible lo cubre html::before. */
+     fondo del tema fuera del área visible lo cubre html::before.
+     El reparto/centrado del juego lo gestiona ahora LandingShell. */
   min-height: 100vh;
   min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
 }
 
-/* Marco de teléfono en viewports anchos; full-bleed en móvil */
+/* Estilos intrínsecos del "teléfono". El encuadre (marco, fondo
+   púrpura, centrado) vive ahora en la columna de juego de la landing
+   (components/landing/landing-shell.module.css), porque el reparto a
+   dos columnas obliga a moverlo desde el body al panel derecho. */
 #phone {
   width: 100%;
   max-width: 100%;
@@ -115,23 +117,6 @@ body {
   position: relative;
   overflow: hidden;
   transition: background 0.35s ease;
-}
-
-@media (min-width: 480px) {
-  body {
-    padding: 24px;
-    background: #2a1b3d radial-gradient(circle at 20% 10%, #3a2a5a, #1a1430 60%);
-  }
-  #phone {
-    max-width: 420px;
-    min-height: 860px;
-    max-height: 920px;
-    border-radius: 38px;
-    box-shadow:
-      0 30px 60px -20px rgba(0, 0, 0, 0.45),
-      0 0 0 8px #15102a,
-      0 0 0 9px #2a1b3d;
-  }
 }
 
 /* ===== Animaciones compartidas (globales, usadas desde CSS Modules) ===== */

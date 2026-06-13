@@ -1,0 +1,380 @@
+/* ============================================================
+   Landing — columna de información (izquierda, solo ≥860px).
+   Medidas, colores y sombras tomados del handoff de diseño.
+   ============================================================ */
+
+/* Solo se muestra en escritorio: por debajo de 860px la landing
+   desaparece y el juego ocupa toda la pantalla. */
+@media (max-width: 859px) {
+  .info {
+    display: none;
+  }
+}
+
+.info {
+  position: relative;
+  min-width: 0; /* el ancho lo fija el track del grid del shell */
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg);
+  /* manchas de acento suaves, separadas de los bordes */
+  background-image:
+    radial-gradient(420px 420px at 88% 32%, rgba(255, 201, 60, 0.3), transparent 62%),
+    radial-gradient(460px 460px at 8% 70%, rgba(255, 123, 90, 0.22), transparent 60%),
+    radial-gradient(380px 380px at 18% 22%, rgba(79, 209, 165, 0.16), transparent 62%);
+}
+
+.info::-webkit-scrollbar {
+  width: 10px;
+}
+
+.info::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+.inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 64px) clamp(24px, 5vw, 72px) 64px;
+}
+
+/* ---------- brand row ---------- */
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 6px 0 rgba(42, 27, 61, 0.1));
+  animation: bob 3.6s ease-in-out infinite;
+}
+
+.brandName {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+/* ---------- hero ---------- */
+.hero {
+  margin-top: clamp(32px, 6vw, 60px);
+}
+
+.heroTitle {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(38px, 6vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -1.5px;
+  margin: 0;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.accent {
+  color: var(--coral);
+}
+
+.heroText {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 18px 0 0;
+  max-width: 46ch;
+}
+
+.heroHint {
+  display: flex;
+  margin-top: 26px;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.heroHintArrow {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--coral);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--coral-deep);
+  animation: ln-nudge 1.6s ease-out infinite;
+}
+
+@keyframes ln-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+/* ---------- recommend-mobile callout ---------- */
+.tip {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: clamp(24px, 4vw, 38px);
+  background: var(--coral);
+  color: #fff;
+  border-radius: var(--r-lg);
+  padding: 17px 20px;
+  box-shadow:
+    0 6px 0 var(--coral-deep),
+    var(--shadow-card);
+}
+
+.tipIcon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  animation: bob 3.6s ease-in-out infinite;
+}
+
+.tipText {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.tipText b {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 15.5px;
+}
+
+/* ---------- section heading ---------- */
+.section {
+  margin-top: clamp(38px, 5vw, 56px);
+}
+
+.kicker {
+  font-family: var(--body);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin: 0 0 16px;
+}
+
+/* ---------- how to play — numbered steps ---------- */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-card);
+}
+
+.stepNum {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: 0 5px 0 rgba(42, 27, 61, 0.16);
+}
+
+.stepTitle {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 18px;
+  margin: 2px 0 3px;
+  color: var(--ink);
+}
+
+.stepText {
+  font-family: var(--body);
+  font-weight: 500;
+  font-size: 14.5px;
+  line-height: 1.45;
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* ---------- modes ---------- */
+.modes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.mode {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 18px 16px;
+  box-shadow: var(--shadow-card);
+  text-align: left;
+}
+
+.modeChip {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  margin-bottom: 14px;
+  box-shadow: 0 5px 0 rgba(42, 27, 61, 0.14);
+}
+
+.modeTitle {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 17px;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+
+.modeText {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* ---------- grid sizes ---------- */
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.size {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 11px 18px;
+  box-shadow: var(--shadow-soft);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.size small {
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- features ---------- */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.featureIcon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--bg-accent);
+  color: var(--ink);
+}
+
+.featureTitle {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 15.5px;
+  margin: 1px 0 3px;
+  color: var(--ink);
+}
+
+.featureText {
+  font-family: var(--body);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* ---------- footer ---------- */
+.footer {
+  margin-top: 48px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.footer a {
+  color: var(--coral);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo,
+  .tipIcon,
+  .heroHintArrow {
+    animation: none;
+  }
+}
