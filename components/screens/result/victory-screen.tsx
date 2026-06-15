@@ -49,7 +49,7 @@ export function VictoryScreen({ info, onAgain, onHome }: VictoryScreenProps) {
             <IconRefresh size={20} />
             Jugar de nuevo
           </Button>
-          <Button variant="ghost" block onClick={onHome}>
+          <Button variant="soft" block onClick={onHome}>
             Inicio
           </Button>
         </div>
