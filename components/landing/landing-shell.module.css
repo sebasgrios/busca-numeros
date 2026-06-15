@@ -17,8 +17,13 @@
 .gamePane {
   min-width: 0; /* rellena la pista 1fr */
   height: 100dvh;
-  display: grid;
-  place-items: center;
+  /* Flex con `align-items: stretch`: el marco se estira al content-box del
+     panel (padding ya descontado, sin porcentajes ni `dvh`), de modo que su
+     altura es variable con la del navegador. `justify-content: center` lo
+     centra en horizontal dentro de su ancho máximo. */
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
   background: var(--bg);
 }
 
@@ -36,8 +41,14 @@
   .gamePane :global(#phone) {
     width: 100%;
     max-width: 420px;
-    min-height: 860px;
-    max-height: 920px;
+    /* Neutraliza el `min-height: 100dvh` que el marco hereda de globals.css
+       (pensado para móvil full-bleed). En desktop el marco se estira al
+       content-box del panel vía `align-items: stretch`, por lo que su altura
+       es variable con la del navegador. Al ser un item flex estirado, su
+       altura es definida y las pantallas internas resuelven su `height: 100%`
+       contra el marco en lugar del viewport: el contenido nunca se corta fuera
+       del marco en pantallas altas (p. ej. 1920×1080). */
+    min-height: 0;
     border-radius: 38px;
     box-shadow:
       0 30px 60px -20px rgba(0, 0, 0, 0.45),
