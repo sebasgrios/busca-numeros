@@ -27,5 +27,13 @@
     padding-top: 26px;
     padding-right: 22px;
     padding-left: 22px;
+    /* Dentro del marco de teléfono, la pantalla se mide contra el marco
+       (que tiene altura definida), no contra el viewport: así el contenido
+       anclado abajo no se corta fuera del marco en pantallas altas. */
+    min-height: 100%;
+  }
+
+  .scroll {
+    height: 100%;
   }
 }
