@@ -82,8 +82,3 @@ hooks/               hooks compartidos (useNow, useClientValue)
 ## 📄 Licencia
 
 Distribuido bajo la licencia **MIT**. Consulta [`LICENSE`](LICENSE) para los detalles.
-
-<div align="center">
-<br>
-<sub>Hecho con ☕ y un poco de obsesión por los récords.</sub>
-</div>
