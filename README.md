@@ -15,6 +15,7 @@ Juego *mobile-first* de memoria y velocidad, construido con Next.js 16, React 19
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![PartyKit](https://img.shields.io/badge/PartyKit-realtime-FF3E00)
 ![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 </div>
 
@@ -77,6 +78,10 @@ hooks/               hooks compartidos (useNow, useClientValue)
 
 > [!TIP]
 > ¿Vas a trabajar en el proyecto? Empieza por [`AGENTS.md`](AGENTS.md) y la documentación detallada en [`docs/INDEX.md`](docs/INDEX.md).
+
+## 📄 Licencia
+
+Distribuido bajo la licencia **MIT**. Consulta [`LICENSE`](LICENSE) para los detalles.
 
 <div align="center">
 <br>
