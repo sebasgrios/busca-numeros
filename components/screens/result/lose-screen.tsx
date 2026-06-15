@@ -48,7 +48,7 @@ export function LoseScreen({ info, onAgain, onHome }: LoseScreenProps) {
             <IconRefresh size={20} />
             Intentar otra vez
           </Button>
-          <Button variant="ghost" block onClick={onHome}>
+          <Button variant="soft" block onClick={onHome}>
             Inicio
           </Button>
         </div>
